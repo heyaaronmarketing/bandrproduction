@@ -111,8 +111,48 @@ async function handleQuote(request, env, ctx) {
       }
     }
 
-    // Honeypot — silently accept (so bots think they succeeded)
+    // ---- Anti-spam layer 1: honeypot ----
+    // Bots blindly fill every field. Real forms leave _gotcha empty.
+    // Silent-accept so bots think they succeeded and don't retry.
     if (clean(d._gotcha, 100)) return json({ ok: true });
+
+    // ---- Anti-spam layer 2: time-gate ----
+    // The client stamps _form_loaded_ms on page load. Any submit within
+    // 2s is scripted, not human. Silent-accept.
+    const loadedMs = parseInt(String(d._form_loaded_ms || "0"), 10);
+    if (loadedMs > 0 && (Date.now() - loadedMs) < 2000) return json({ ok: true });
+
+    // ---- Anti-spam layer 3: Origin/Referer must be bandrproduction.com ----
+    // Direct-to-API spam usually skips setting Origin or sends bogus values.
+    // Only enforce when the header is present at all (some legit clients strip).
+    const originOrRef = request.headers.get("origin") || request.headers.get("referer") || "";
+    if (originOrRef && !/(^|\.)bandrproduction\.com/i.test(originOrRef)) {
+      return json({ ok: true });
+    }
+
+    // ---- Anti-spam layer 4: Cloudflare Turnstile ----
+    // Only enforced when TURNSTILE_SECRET is set — safe to deploy this code
+    // before the widget is provisioned. When enforced, missing/invalid token
+    // returns a visible error so a legit user can retry the challenge.
+    if (env.TURNSTILE_SECRET) {
+      const token = clean(d["cf-turnstile-response"], 4096);
+      const ip = request.headers.get("cf-connecting-ip") || "";
+      let ts;
+      try {
+        const r = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ secret: env.TURNSTILE_SECRET, response: token, remoteip: ip }),
+        });
+        ts = await r.json();
+      } catch (e) {
+        console.log("turnstile verify error", e && e.message);
+        ts = { success: false };
+      }
+      if (!ts.success) {
+        return json({ ok: false, error: "Please complete the security check and try again." }, 403);
+      }
+    }
 
     if (uploadError) {
       return json({ ok: false, error: uploadError }, 400);
@@ -131,6 +171,41 @@ async function handleQuote(request, env, ctx) {
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
       return json({ ok: false, error: "Please enter a valid email address." }, 400);
     }
+
+    // ---- Anti-spam layer 5: content heuristics (silent-drop) ----
+    // Every check below is a well-established spam signature. Silent-accept
+    // avoids giving bots feedback that they were filtered.
+    const msgLC = message.toLowerCase();
+    const emailLC = email.toLowerCase();
+
+    // (a) URL count in message — real quote requests rarely include 3+ links.
+    const urlCount = (message.match(/https?:\/\/[^\s]+|www\.[^\s]+/gi) || []).length;
+    if (urlCount > 2) return json({ ok: true });
+
+    // (b) Cyrillic + CJK dominance — near-zero legit signal for a TX shop.
+    const cyrillic = (message.match(/[Ѐ-ӿ]/g) || []).length;
+    const cjk = (message.match(/[一-鿿]/g) || []).length;
+    if (cyrillic + cjk > 10) return json({ ok: true });
+
+    // (c) Keyword blocklist — the vast majority of B2B form spam.
+    const SPAM_KEYWORDS = [
+      "seo services", "guaranteed rankings", "backlinks package", "guest post",
+      "increase your ranking", "top ranking", "search engine optimization",
+      "buy real followers", "casino", "online casino", "crypto trading",
+      "cryptocurrency", "bitcoin investment", "forex trading", "cbd oil",
+      "vashikaran", "weight loss pills", "adult webcam", "dating site",
+      "essay writing service", "porn", "loan offer", "make money fast",
+    ];
+    if (SPAM_KEYWORDS.some((k) => msgLC.includes(k))) return json({ ok: true });
+
+    // (d) Disposable / burner email domains.
+    const DISPOSABLE = [
+      "mailinator", "guerrillamail", "tempmail", "10minutemail", "throwaway",
+      "yopmail", "trashmail", "sharklasers", "getnada", "maildrop",
+      "dispostable", "fakeinbox", "tempinbox", "tempr.email", "disposable",
+      "mintemail", "mailnesia", "spam4.me", "mailsac",
+    ];
+    if (DISPOSABLE.some((dom) => emailLC.includes(dom))) return json({ ok: true });
 
     const attachmentSummary = attachments.length
       ? `Attachments (${attachments.length}): ${attachments.map((a) => a.filename).join(", ")}`

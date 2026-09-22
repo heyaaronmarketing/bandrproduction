@@ -239,7 +239,8 @@ main{padding-top:0!important;padding-bottom:0!important}
         <div class="quote-form-wrap">
           <form id="quote-form" method="POST" action="/api/quote" novalidate>
             <input type="hidden" name="_source" value="quote-page"/>
-            <div style="display:none"><label>Leave this empty <input name="_gotcha" tabindex="-1" autocomplete="off"/></label></div>
+            <input type="hidden" name="_form_loaded_ms" id="_form_loaded_ms" value=""/>
+            <div style="display:none" aria-hidden="true"><label>Leave this empty <input name="_gotcha" tabindex="-1" autocomplete="off"/></label></div>
 
             <div class="field-row">
               <label class="field">
@@ -282,6 +283,7 @@ main{padding-top:0!important;padding-bottom:0!important}
 
             <p style="color:var(--muted);font-size:13px;margin:8px 0 18px">Prefer email? Send print + spec to <a href="mailto:sales@bandrproduction.com">sales@bandrproduction.com</a>. Prefer to talk? <a href="tel:+19362917827">(936) 291-7827</a> — shop hours Mo–Fr 9–5 CT.</p>
 
+            
             <button type="submit" class="dl-cta" id="quote-submit">Send Quote Request →</button>
             <div id="quote-progress" class="quote-progress" hidden><div class="bar"></div></div>
             <div id="quote-status" role="status" aria-live="polite"></div>
@@ -323,6 +325,9 @@ main{padding-top:0!important;padding-bottom:0!important}
 (function(){
   var form = document.getElementById('quote-form');
   if (!form) return;
+  // Time-gate: bots submit instantly. Record page-load ms; server rejects <2s.
+  var _tsInput = document.getElementById('_form_loaded_ms');
+  if (_tsInput) _tsInput.value = String(Date.now());
   var status = document.getElementById('quote-status');
   var btn = document.getElementById('quote-submit');
   var fileInput = document.getElementById('quote-files');
