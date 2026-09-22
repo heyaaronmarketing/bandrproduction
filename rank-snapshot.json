@@ -1,14 +1,14 @@
 {
-  "captured_at": "2026-08-15T20:21:04Z",
+  "captured_at": "2026-09-22T15:12:24Z",
   "summary": {
     "total_tracked": 51,
-    "ranking": 16,
+    "ranking": 15,
     "top_10": 6,
-    "pos_11_20": 7,
-    "pos_21_50": 3,
-    "unranked": 35,
-    "total_addressable_volume": 2520,
-    "captured_volume": 420
+    "pos_11_20": 4,
+    "pos_21_50": 5,
+    "unranked": 36,
+    "total_addressable_volume": 1060,
+    "captured_volume": 380
   },
   "groups": {
     "head-terms": [
@@ -133,8 +133,8 @@
       },
       {
         "keyword": "defense machine shop",
-        "rank": null,
-        "volume": 0
+        "rank": 42,
+        "volume": 30
       },
       {
         "keyword": "wellhead components",
@@ -175,18 +175,18 @@
       },
       {
         "keyword": "machine shop in san antonio",
-        "rank": 16,
-        "volume": 720
+        "rank": null,
+        "volume": 0
       },
       {
         "keyword": "san antonio machine shops",
-        "rank": 18,
-        "volume": 720
+        "rank": null,
+        "volume": 0
       },
       {
         "keyword": "cnc machining san antonio",
-        "rank": 16,
-        "volume": 30
+        "rank": 29,
+        "volume": 10
       },
       {
         "keyword": "cnc machine shop dallas",
@@ -201,11 +201,11 @@
       {
         "keyword": "austin cnc machining",
         "rank": 24,
-        "volume": 20
+        "volume": 30
       },
       {
         "keyword": "machine shop conroe tx",
-        "rank": 23,
+        "rank": 27,
         "volume": 170
       },
       {
@@ -215,23 +215,23 @@
       },
       {
         "keyword": "humble machine shop",
-        "rank": 6,
+        "rank": 8,
         "volume": 30
       },
       {
         "keyword": "machine shops in humble tx",
-        "rank": 6,
+        "rank": 9,
         "volume": 30
       },
       {
         "keyword": "machine shops in tomball tx",
         "rank": 2,
-        "volume": 40
+        "volume": 20
       },
       {
         "keyword": "machine shop tomball tx",
         "rank": 7,
-        "volume": 40
+        "volume": 20
       },
       {
         "keyword": "machine shops in spring tx",

@@ -96,6 +96,7 @@
   <url><loc>https://bandrproduction.com/guides/wireline-tool-machining-guide/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://bandrproduction.com/industries/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://bandrproduction.com/industries/aerospace-cnc-machining/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://bandrproduction.com/industries/aerospace-parts-manufacturer/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://bandrproduction.com/industries/industrial-cnc-machining/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://bandrproduction.com/industries/military-defense-cnc-machining/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://bandrproduction.com/industries/oil-gas-cnc-machining/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
@@ -117,6 +118,8 @@
   <url><loc>https://bandrproduction.com/service-specs/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://bandrproduction.com/services/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://bandrproduction.com/services/api-6a-machining/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://bandrproduction.com/services/cnc-production-machining/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://bandrproduction.com/services/contract-cnc-manufacturing/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://bandrproduction.com/services/downhole-tool-machining/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://bandrproduction.com/services/emergency-cnc-machining/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://bandrproduction.com/services/frac-pump-machining/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
