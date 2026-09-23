@@ -108,6 +108,15 @@ details.faq p{margin:10px 0 4px;color:var(--muted);font-size:14.5px;line-height:
 .site-footer .foot-brand p{max-width:36em;color:#8b95a1}
 .site-footer .copy{border-top:1px solid #222;padding-top:20px;color:#8b95a1;font-size:13px;margin-top:8px}
 @media (max-width:800px){.site-footer .foot-cols{grid-template-columns:1fr;gap:22px}}
+
+/* Mobile sticky CTA — high-conversion element for ad + organic traffic */
+.sticky-cta{position:fixed;bottom:0;left:0;right:0;background:#0d0d0d;color:#fff;display:none;justify-content:center;gap:10px;padding:10px 12px;z-index:1500;box-shadow:0 -2px 14px rgba(0,0,0,.4);border-top:1px solid #222}
+.sticky-cta a{display:inline-flex;align-items:center;justify-content:center;padding:12px 18px;border-radius:8px;font-weight:700;text-decoration:none;font-size:15px;line-height:1.2;flex:1;max-width:220px}
+.sticky-cta a.call{background:#fff;color:#0d0d0d}
+.sticky-cta a.call:hover{background:#f3f4f6}
+.sticky-cta a.quote{background:#0C74C0;color:#fff}
+.sticky-cta a.quote:hover{background:#0a5f9c}
+@media (max-width:768px){.sticky-cta{display:flex}body{padding-bottom:72px}}
 </style>
 <script>
 /* First-touch attribution — captures landing URL, external referrer, and
@@ -327,6 +336,7 @@ main{padding-top:0!important;padding-bottom:0!important}
     <div class="copy">&copy; B&R Productions &middot; New Waverly, TX &middot; CNC machining since 1994</div>
   </div>
 </footer>
+<div class="sticky-cta" role="complementary" aria-label="Quick contact"><a class="call" href="tel:+19362917827">📞 (936) 291-7827</a><a class="quote" href="/about-us/get-a-quote/">Get a Quote →</a></div>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WKQL399K"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </body>
