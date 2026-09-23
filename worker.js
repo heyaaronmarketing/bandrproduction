@@ -397,6 +397,14 @@ async function sendWeeklyDigest(env) {
     }
   }
 
+  // ---- Goal progress (90-day quality-lead target) ----
+  try {
+    const goalLines = await goalDigestLines(env);
+    for (const l of goalLines) lines.push(l);
+  } catch (e) {
+    console.log("digest goal section err", e && e.message);
+  }
+
   // ---- Rank snapshot deltas ----
   try {
     const rankLines = await rankDigestLines(env);
@@ -1801,6 +1809,251 @@ async function ranksForDashboard(request, env) {
 // Query params:
 //   ?days=N     — pull leads from last N days (default 30, max 400)
 //   ?force=1    — ignore the 90-day dedupe and generate even if asked recently
+// ---------------------------------------------------------------------------
+// Shared lead-scoring (used by /admin/leads/list + goal tracker)
+// ---------------------------------------------------------------------------
+
+const _SCORE_SPAM_KEYWORDS = [
+  "seo services","guaranteed rankings","backlinks package","guest post",
+  "increase your ranking","top ranking","search engine optimization",
+  "buy real followers","casino","online casino","crypto trading","cryptocurrency",
+  "bitcoin investment","forex trading","cbd oil","vashikaran","weight loss pills",
+  "adult webcam","dating site","essay writing service","porn","loan offer",
+  "make money fast","viagra","cialis",
+];
+const _SCORE_DISPOSABLE = [
+  "mailinator","guerrillamail","tempmail","10minutemail","throwaway","yopmail",
+  "trashmail","sharklasers","getnada","maildrop","dispostable","fakeinbox",
+  "tempinbox","tempr.email","disposable","mintemail","mailnesia","spam4.me","mailsac",
+];
+const _SCORE_FREE_EMAIL = ["gmail.com","yahoo.com","hotmail.com","outlook.com","aol.com","icloud.com","proton.me","protonmail.com","mail.ru","yandex.com"];
+const _SCORE_SPAM_TLDS = [".info",".biz",".xyz",".top",".click",".online",".site",".buzz"];
+const _SCORE_INTL_PREFIXES = ["+91","+44","+49","+92","+234","+7","+380","+372","+27","+63","+62","+81"];
+const _SCORE_SALES_OPENERS = [
+  "would you like to get more customers","would you like more customers",
+  "our firm helps","i'm reaching out to find the person",
+  "we help make-to-order shops","would you like to know",
+  "hope this email finds you","thank you for taking the time to review",
+  "would you consider adding","we specialize in",
+];
+
+function _scoreLead(l) {
+  let s = 50;
+  const reasons = [];
+  const msg = String(l.message || "");
+  const msgLC = msg.toLowerCase();
+  const email = String(l.email || "").toLowerCase();
+  const name = String(l.name || "").trim();
+  const nameLC = name.toLowerCase();
+  const company = String(l.company || "").trim();
+  const phone = String(l.phone || "").trim();
+
+  // Boost signals
+  if (name.split(/\s+/).length >= 2) { s += 10; reasons.push("+10 full name"); }
+  if (company) { s += 15; reasons.push("+15 company"); }
+  if (phone && phone.replace(/\D/g,"").length >= 10) { s += 15; reasons.push("+15 phone"); }
+  if (msg.length >= 40) { s += 10; reasons.push("+10 msg≥40ch"); }
+  if (msg.length >= 200) { s += 10; reasons.push("+10 msg≥200ch"); }
+  // Machine-shop-relevant vocabulary
+  const shopVocab = /\b(quote|rfq|tolerance|inconel|titanium|stainless|hastelloy|monel|super\s*duplex|17-4|4140|4340|6061|7075|machining|milling|turning|cnc|fixture|prototype|production|part|drawing|print|step|iges|dxf|dwg|first\s*article|cmm|mtr|api|aerospace|defense|oilfield|frac|wellhead|downhole|drill|drilling|deep\s*hole|thread|surface\s*finish|ppap|itar|dfars|as9100|nadcap|mwd|nitronic|fluid\s*end|quint(uplex)?|clin)\b/gi;
+  const vocabHits = (msg.match(shopVocab) || []).length;
+  if (vocabHits >= 1) { s += 15; reasons.push(`+15 shop-vocab×${vocabHits}`); }
+  if (vocabHits >= 4) { s += 10; reasons.push("+10 vocab-dense"); }
+  const emailDomain = email.split("@")[1] || "";
+  if (email && !_SCORE_FREE_EMAIL.includes(emailDomain)) { s += 10; reasons.push("+10 biz-email"); }
+  // Real US phone
+  const digitsOnly = phone.replace(/\D/g,"");
+  const isUSPhone = phone && !phone.startsWith("+") && digitsOnly.length >= 10 && digitsOnly.length <= 11;
+  if (isUSPhone) { s += 10; reasons.push("+10 US-phone"); }
+
+  // Penalty signals
+  if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { s -= 40; reasons.push("−40 bad email"); }
+  if (!name) { s -= 20; reasons.push("−20 no name"); }
+  if (!msg) { s -= 20; reasons.push("−20 no message"); }
+  const urlCount = (msg.match(/https?:\/\/[^\s]+|www\.[^\s]+/gi) || []).length;
+  if (urlCount >= 1) { s -= 15 * urlCount; reasons.push(`−${15*urlCount} url×${urlCount}`); }
+  const cyrillic = (msg.match(/[Ѐ-ӿ]/g) || []).length;
+  const cjk = (msg.match(/[一-鿿]/g) || []).length;
+  if (cyrillic + cjk > 5) { s -= 40; reasons.push(`−40 cyrillic/cjk×${cyrillic+cjk}`); }
+  const keywordHits = _SCORE_SPAM_KEYWORDS.filter(k => msgLC.includes(k));
+  if (keywordHits.length) { s -= 30 * keywordHits.length; reasons.push(`−${30*keywordHits.length} spam-kw`); }
+  if (_SCORE_DISPOSABLE.some(d => emailDomain.includes(d))) { s -= 50; reasons.push("−50 disposable-email"); }
+  if (l._spam_reason) { s -= 40; reasons.push(`−40 spam_reason: ${l._spam_reason}`); }
+  if (msg.length >= 40 && msg === msg.toUpperCase()) { s -= 15; reasons.push("−15 all-caps"); }
+  if (name && !/\s/.test(name) && name.length < 4) { s -= 15; reasons.push("−15 tiny-name"); }
+  if (msg && /^[\s\S]{1,100}$/.test(msg) && /^(https?:\/\/|www\.|\S+@\S+)/i.test(msg.trim())) {
+    s -= 25; reasons.push("−25 msg-is-link/email");
+  }
+  // International phone prefix (heavy penalty for TX shop)
+  if (phone && _SCORE_INTL_PREFIXES.some(p => phone.startsWith(p))) { s -= 40; reasons.push("−40 intl-phone"); }
+  // Spammy TLD
+  if (email && _SCORE_SPAM_TLDS.some(t => emailDomain.endsWith(t))) { s -= 25; reasons.push("−25 spam-tld"); }
+  // Name/email prefix mismatch (bot filling random names into random inbox handles)
+  if (email && nameLC && emailDomain) {
+    const prefix = (email.split("@")[0] || "").toLowerCase();
+    const firstName = nameLC.split(/\s+/)[0] || "";
+    const lastName = nameLC.split(/\s+/).pop() || "";
+    const prefixHasName = firstName.length >= 3 && prefix.includes(firstName);
+    const prefixHasLast = lastName.length >= 3 && prefix.includes(lastName);
+    if (nameLC && !prefixHasName && !prefixHasLast && _SCORE_FREE_EMAIL.includes(emailDomain)) {
+      s -= 25; reasons.push("−25 name/email mismatch");
+    }
+  }
+  // Cold-sales opener
+  const salesHit = _SCORE_SALES_OPENERS.find(o => msgLC.includes(o));
+  if (salesHit) { s -= 20; reasons.push(`−20 sales-opener`); }
+  // Templated short generic ask
+  const isTemplateShort = msg.length < 100 && /\b(more information|get a quote|email updates|updates)\b/i.test(msg) && (!phone || !company);
+  if (isTemplateShort) { s -= 25; reasons.push("−25 template-ask"); }
+
+  const verdict = s >= 100 ? "REAL-BUYER" : (s >= 80 ? "REAL" : (s >= 50 ? "PROBABLY-REAL" : (s >= 20 ? "SUSPICIOUS" : "SPAM")));
+  return { score: s, reasons, verdict };
+}
+
+// ---------------------------------------------------------------------------
+// Goal tracker — persistent state in KV. Target: 20 high-quality leads
+// (score ≥ 100, i.e. REAL-BUYER verdict — Lorne/QDC and John/GD Energy
+// class) in a rolling 90-day window from goal start.
+// Read/reset via /admin/goal/{status,set,reset}.
+// ---------------------------------------------------------------------------
+
+async function _getGoalState(env) {
+  if (!env.LEADS_KV) return null;
+  const raw = await env.LEADS_KV.get("goal:current");
+  if (raw) { try { return JSON.parse(raw); } catch { /* fall through */ } }
+  // Auto-initialize on first request. Start date = now.
+  const state = {
+    id: "leads-20-in-90-days",
+    description: "20 high-quality inbound leads similar to Lorne (QDC Services) and John (GD Energy Products) — verdict REAL-BUYER, score ≥ 100",
+    start_ts: Date.now(),
+    window_days: 90,
+    target_count: 20,
+    threshold_score: 100,
+    created_at: new Date().toISOString(),
+  };
+  await env.LEADS_KV.put("goal:current", JSON.stringify(state));
+  return state;
+}
+
+async function _computeGoalStatus(env) {
+  const goal = await _getGoalState(env);
+  if (!goal) return null;
+  const now = Date.now();
+  const day_ms = 24 * 60 * 60 * 1000;
+  const elapsed_days = (now - goal.start_ts) / day_ms;
+  const deadline_ts = goal.start_ts + goal.window_days * day_ms;
+  const days_remaining = Math.max(0, (deadline_ts - now) / day_ms);
+
+  const qualifying = [];
+  let cursor = undefined;
+  do {
+    const list = await env.LEADS_KV.list({ prefix: "lead:", cursor, limit: 1000 });
+    for (const k of list.keys) {
+      const ts = parseInt(k.name.split(":")[1] || "0", 10);
+      if (ts < goal.start_ts || ts > deadline_ts) continue;
+      const raw = await env.LEADS_KV.get(k.name);
+      if (!raw) continue;
+      try {
+        const l = JSON.parse(raw);
+        const { score, verdict } = _scoreLead(l);
+        if (score >= goal.threshold_score) {
+          qualifying.push({
+            ts, score, verdict,
+            first_seen: new Date(ts).toISOString(),
+            name: l.name || null,
+            email: l.email || null,
+            company: l.company || null,
+            attribution: l.attribution || null,
+          });
+        }
+      } catch { /* skip */ }
+    }
+    cursor = list.list_complete ? undefined : list.cursor;
+  } while (cursor);
+
+  const captured = qualifying.length;
+  const percent = goal.target_count ? Math.round((captured / goal.target_count) * 100) : 0;
+  const expected_by_now = goal.target_count * Math.min(1, elapsed_days / goal.window_days);
+  const on_pace = captured >= expected_by_now;
+  const surplus_deficit = captured - expected_by_now;
+  const weekly_pace_needed = days_remaining > 0
+    ? ((goal.target_count - captured) / (days_remaining / 7))
+    : Infinity;
+
+  qualifying.sort((a, b) => b.ts - a.ts);
+
+  return {
+    goal,
+    captured,
+    target: goal.target_count,
+    percent,
+    threshold_score: goal.threshold_score,
+    elapsed_days: Math.round(elapsed_days * 10) / 10,
+    days_remaining: Math.round(days_remaining * 10) / 10,
+    deadline_iso: new Date(deadline_ts).toISOString(),
+    expected_by_now: Math.round(expected_by_now * 10) / 10,
+    on_pace,
+    surplus_deficit: Math.round(surplus_deficit * 10) / 10,
+    weekly_pace_needed: Math.round(weekly_pace_needed * 10) / 10,
+    qualifying_leads: qualifying,
+  };
+}
+
+async function goalStatusEndpoint(request, env) {
+  const auth = _adminAuth(request, env); if (!auth.ok) return auth.response;
+  if (!env.LEADS_KV) return json({ ok: false, error: "LEADS_KV not bound" }, 400);
+  const status = await _computeGoalStatus(env);
+  return json({ ok: true, status });
+}
+
+async function goalSetEndpoint(request, env) {
+  const auth = _adminAuth(request, env); if (!auth.ok) return auth.response;
+  if (!env.LEADS_KV) return json({ ok: false, error: "LEADS_KV not bound" }, 400);
+  const body = await request.json().catch(() => ({}));
+  const existing = await _getGoalState(env) || {};
+  const state = {
+    id: body.id || existing.id || "custom-goal",
+    description: body.description || existing.description || "",
+    start_ts: typeof body.start_ts === "number" ? body.start_ts : (existing.start_ts || Date.now()),
+    window_days: body.window_days || existing.window_days || 90,
+    target_count: body.target_count || existing.target_count || 20,
+    threshold_score: body.threshold_score || existing.threshold_score || 100,
+    created_at: new Date().toISOString(),
+  };
+  await env.LEADS_KV.put("goal:current", JSON.stringify(state));
+  return json({ ok: true, state });
+}
+
+async function goalResetEndpoint(request, env) {
+  const auth = _adminAuth(request, env); if (!auth.ok) return auth.response;
+  if (!env.LEADS_KV) return json({ ok: false, error: "LEADS_KV not bound" }, 400);
+  await env.LEADS_KV.delete("goal:current");
+  return json({ ok: true, reset: true, note: "Next status call will auto-initialize with default 20-in-90 goal starting now." });
+}
+
+async function goalDigestLines(env) {
+  const s = await _computeGoalStatus(env);
+  if (!s) return [];
+  const icon = s.on_pace ? "🟢" : "🔴";
+  const lines = [
+    "",
+    "=== 90-DAY GOAL — 20 HIGH-QUALITY LEADS ===",
+    `  ${icon} ${s.captured}/${s.target} captured (${s.percent}% of target)`,
+    `  Day ${Math.floor(s.elapsed_days)}/${s.goal.window_days} · ${Math.floor(s.days_remaining)} days remaining`,
+    `  Expected by now: ${s.expected_by_now}. ${s.on_pace ? "On pace" : "Behind pace"} by ${Math.abs(s.surplus_deficit).toFixed(1)}.`,
+    `  Weekly pace needed to close: ${isFinite(s.weekly_pace_needed) ? s.weekly_pace_needed.toFixed(1) : "n/a"} qualifying leads/week`,
+  ];
+  if (s.qualifying_leads.length) {
+    lines.push(`  Recent qualifying leads:`);
+    for (const q of s.qualifying_leads.slice(0, 5)) {
+      lines.push(`    · [${q.first_seen.slice(0,10)}] ${q.name || "?"} @ ${q.company || "—"}  (score ${q.score})`);
+    }
+  } else {
+    lines.push(`  No qualifying leads yet in this window.`);
+  }
+  return lines;
+}
+
 // GET /admin/leads/list?token=X&days=N&min_score=0
 // Read-only dump of every lead captured to LEADS_KV, with a per-lead
 // substance score so real leads sort ahead of spam. Zero side effects.
@@ -1832,82 +2085,12 @@ async function leadsList(request, env) {
     cursor = list.list_complete ? undefined : list.cursor;
   } while (cursor);
 
-  const SPAM_KEYWORDS = [
-    "seo services","guaranteed rankings","backlinks package","guest post",
-    "increase your ranking","top ranking","search engine optimization",
-    "buy real followers","casino","online casino","crypto trading","cryptocurrency",
-    "bitcoin investment","forex trading","cbd oil","vashikaran","weight loss pills",
-    "adult webcam","dating site","essay writing service","porn","loan offer",
-    "make money fast","viagra","cialis",
-  ];
-  const DISPOSABLE = [
-    "mailinator","guerrillamail","tempmail","10minutemail","throwaway","yopmail",
-    "trashmail","sharklasers","getnada","maildrop","dispostable","fakeinbox",
-    "tempinbox","tempr.email","disposable","mintemail","mailnesia","spam4.me","mailsac",
-  ];
-  const FREE_EMAIL = ["gmail.com","yahoo.com","hotmail.com","outlook.com","aol.com","icloud.com","proton.me","protonmail.com"];
-
-  function score(l) {
-    let s = 50;                  // baseline neutral
-    const reasons = [];
-    const msg = String(l.message || "");
-    const msgLC = msg.toLowerCase();
-    const email = String(l.email || "").toLowerCase();
-    const name = String(l.name || "").trim();
-    const company = String(l.company || "").trim();
-    const phone = String(l.phone || "").trim();
-
-    // Boost signals (real-lead indicators)
-    if (name.split(/\s+/).length >= 2) { s += 10; reasons.push("+10 full name"); }
-    if (company) { s += 15; reasons.push("+15 company"); }
-    if (phone && phone.replace(/\D/g,"").length >= 10) { s += 15; reasons.push("+15 phone"); }
-    if (msg.length >= 40) { s += 10; reasons.push("+10 msg≥40ch"); }
-    if (msg.length >= 200) { s += 10; reasons.push("+10 msg≥200ch"); }
-    // Machine-shop-relevant vocabulary in message
-    const shopVocab = /\b(quote|rfq|tolerance|inconel|titanium|stainless|hastelloy|monel|super\s*duplex|17-4|4140|4340|6061|7075|machining|milling|turning|cnc|fixture|prototype|production|part|drawing|print|step|iges|dxf|dwg|first\s*article|cmm|mtr|api|aerospace|defense|oilfield|frac|wellhead|downhole|drill|drilling|deep\s*hole|thread|surface\s*finish|ppap|itar|dfars|as9100|nadcap)\b/gi;
-    const vocabHits = (msg.match(shopVocab) || []).length;
-    if (vocabHits >= 1) { s += 15; reasons.push(`+15 shop-vocab×${vocabHits}`); }
-    if (vocabHits >= 4) { s += 10; reasons.push("+10 vocab-dense"); }
-    // Business-email plus
-    const emailDomain = email.split("@")[1] || "";
-    if (email && !FREE_EMAIL.includes(emailDomain)) { s += 10; reasons.push("+10 biz-email"); }
-
-    // Penalty signals (spam-lead indicators)
-    if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { s -= 40; reasons.push("−40 bad email"); }
-    if (!name) { s -= 20; reasons.push("−20 no name"); }
-    if (!msg) { s -= 20; reasons.push("−20 no message"); }
-    // URL flood
-    const urlCount = (msg.match(/https?:\/\/[^\s]+|www\.[^\s]+/gi) || []).length;
-    if (urlCount >= 1) { s -= 15 * urlCount; reasons.push(`−${15*urlCount} url×${urlCount}`); }
-    // Cyrillic/CJK dominance (near-zero legit for a TX CNC shop)
-    const cyrillic = (msg.match(/[Ѐ-ӿ]/g) || []).length;
-    const cjk = (msg.match(/[一-鿿]/g) || []).length;
-    if (cyrillic + cjk > 5) { s -= 40; reasons.push(`−40 cyrillic/cjk×${cyrillic+cjk}`); }
-    // Spam keywords
-    const keywordHits = SPAM_KEYWORDS.filter(k => msgLC.includes(k));
-    if (keywordHits.length) { s -= 30 * keywordHits.length; reasons.push(`−${30*keywordHits.length} spam-kw: ${keywordHits.join(",")}`); }
-    // Disposable email domain
-    if (DISPOSABLE.some(d => emailDomain.includes(d))) { s -= 50; reasons.push("−50 disposable-email"); }
-    // Honeypot / time-gate signals (if the lead carries a _gotcha or _form_loaded_ms trigger note)
-    if (l._spam_reason) { s -= 40; reasons.push(`−40 spam_reason: ${l._spam_reason}`); }
-    // All-caps shouting message
-    if (msg.length >= 40 && msg === msg.toUpperCase()) { s -= 15; reasons.push("−15 all-caps"); }
-    // Suspicious name patterns (single word, non-alpha)
-    if (name && !/\s/.test(name) && name.length < 4) { s -= 15; reasons.push("−15 tiny-name"); }
-    // Message is a pure email or URL
-    if (msg && /^[\s\S]{1,100}$/.test(msg) && /^(https?:\/\/|www\.|\S+@\S+)/i.test(msg.trim())) {
-      s -= 25; reasons.push("−25 msg-is-link/email");
-    }
-
-    return { score: s, reasons };
-  }
-
   const scored = leads.map((l) => {
-    const { score: s, reasons } = score(l);
+    const { score: s, reasons, verdict } = _scoreLead(l);
     const first_seen_iso = new Date(l.ts).toISOString();
     return {
       score: s,
-      verdict: s >= 80 ? "REAL" : (s >= 50 ? "PROBABLY-REAL" : (s >= 20 ? "SUSPICIOUS" : "SPAM")),
+      verdict,
       first_seen: first_seen_iso,
       first_seen_local: new Date(l.ts).toString().slice(0, 24),
       name: l.name || null,
@@ -2881,6 +3064,9 @@ export default {
     if (p === "/dashboard/api/ranks"     && request.method === "GET")   return ranksForDashboard(request, env);
     if (p === "/admin/review-requests/generate" && request.method === "POST") return reviewRequestGenerate(request, env);
     if (p === "/admin/leads/list"        && request.method === "GET")  return leadsList(request, env);
+    if (p === "/admin/goal/status"       && request.method === "GET")  return goalStatusEndpoint(request, env);
+    if (p === "/admin/goal/set"          && request.method === "POST") return goalSetEndpoint(request, env);
+    if (p === "/admin/goal/reset"        && request.method === "POST") return goalResetEndpoint(request, env);
     if (p === "/admin/ranks/refresh"     && request.method === "POST") {
       const a = _adminAuth(request, env); if (!a.ok) return a.response;
       ctx.waitUntil((async () => {
