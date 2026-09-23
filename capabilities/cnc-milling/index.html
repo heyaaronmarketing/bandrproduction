@@ -109,6 +109,12 @@ details.faq p{margin:10px 0 4px;color:var(--muted);font-size:14.5px;line-height:
 .site-footer .copy{border-top:1px solid #222;padding-top:20px;color:#8b95a1;font-size:13px;margin-top:8px}
 @media (max-width:800px){.site-footer .foot-cols{grid-template-columns:1fr;gap:22px}}
 </style>
+<script>
+/* First-touch attribution — captures landing URL, external referrer, and
+   UTM/gclid params into sessionStorage on the first page of a session.
+   Read by the quote form at submit time. Zero PII, session-scoped. */
+try{var K='_br_attr';if(!sessionStorage.getItem(K)){var u=new URL(location.href);var q={};u.searchParams.forEach(function(v,k){q[k.toLowerCase()]=v;});var ref=document.referrer||'';var refHost='';var ext=false;if(ref){try{refHost=new URL(ref).hostname||'';ext=refHost.indexOf('bandrproduction.com')<0;}catch(e){}}sessionStorage.setItem(K,JSON.stringify({landing_url:location.pathname+location.search,referrer:ext?ref:'',referrer_host:ext?refHost:'',utm_source:q.utm_source||'',utm_medium:q.utm_medium||'',utm_campaign:q.utm_campaign||'',utm_term:q.utm_term||'',utm_content:q.utm_content||'',gclid:q.gclid||'',first_seen:new Date().toISOString()}));}}catch(e){}
+</script>
 
 <style>
 .cap-hero .hero-badge{display:inline-block;background:rgba(12,116,192,0.08);color:var(--brand);border:1px solid rgba(12,116,192,0.20);padding:7px 16px;border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.01em;line-height:1.4}

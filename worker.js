@@ -264,7 +264,23 @@ async function handleQuote(request, env, ctx) {
     // Fire-and-forget: log to KV + POST to optional external webhook.
     // Both are opportunistic — a KV or webhook failure must not surface to the
     // visitor. ctx.waitUntil lets the Worker return to the browser immediately.
-    const lead = { ts: Date.now(), name, email, phone, company, message, source };
+    const attribution = {
+      referrer:       clean(d._referrer, 500) || null,
+      referrer_host:  clean(d._referrer_host, 200) || null,
+      landing_url:    clean(d._landing_url, 500) || null,
+      utm_source:     clean(d._utm_source, 100) || null,
+      utm_medium:     clean(d._utm_medium, 100) || null,
+      utm_campaign:   clean(d._utm_campaign, 200) || null,
+      utm_term:       clean(d._utm_term, 200) || null,
+      utm_content:    clean(d._utm_content, 200) || null,
+      gclid:          clean(d._gclid, 200) || null,
+      session_first_seen: clean(d._session_first_seen, 40) || null,
+      // Server-side fallback if client-side capture missed
+      submit_referer: request.headers.get("referer") || null,
+      country:        request.cf?.country || null,
+      user_agent:     (request.headers.get("user-agent") || "").slice(0, 300),
+    };
+    const lead = { ts: Date.now(), name, email, phone, company, message, source, attribution };
     if (ctx && env.LEADS_KV) {
       const key = `lead:${lead.ts}:${Math.floor(Math.random() * 1e6).toString(36)}`;
       ctx.waitUntil(
@@ -337,11 +353,18 @@ async function sendWeeklyDigest(env) {
       lines.push(
         `- [${when} UTC] ${l.name || "(no name)"} <${l.email || "(no email)"}>`
         + (l.company ? ` @ ${l.company}` : "")
-        + (l.source ? `  (source: ${l.source})` : "")
       );
       if (l.message) {
         lines.push(`    ${String(l.message).replace(/\s+/g, " ").slice(0, 220)}`);
       }
+      const a = l.attribution || {};
+      const acqBits = [];
+      if (a.utm_source)     acqBits.push(`utm=${a.utm_source}${a.utm_medium ? "/" + a.utm_medium : ""}${a.utm_campaign ? " · " + a.utm_campaign : ""}`);
+      if (a.gclid)          acqBits.push("google-ads");
+      if (a.referrer_host)  acqBits.push(`ref=${a.referrer_host}`);
+      if (a.landing_url)    acqBits.push(`landed=${a.landing_url}`);
+      if (a.country)        acqBits.push(`geo=${a.country}`);
+      if (acqBits.length)   lines.push(`    ↳ ${acqBits.join("  ·  ")}`);
     }
   } else {
     lines.push("");
@@ -1895,6 +1918,7 @@ async function leadsList(request, env) {
       message: l.message || null,
       message_len: (l.message || "").length,
       review_ask_sent_at: l.review_ask_sent_at || null,
+      attribution: l.attribution || null,
       scoring: reasons,
     };
   });
