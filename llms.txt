@@ -1,54 +1,117 @@
 # B&R Productions
 
-> Precision CNC machine shop in New Waverly, Texas since 1994. Machines frac pump, wellhead, downhole tool, aerospace, and defense components in exotic alloys — Inconel 718 and 625, Super Duplex 2507, 17-4 PH, titanium, Monel, and Hastelloy — for oil & gas, aerospace, defense, and industrial customers across Texas and the Gulf Coast. Tight tolerances (±0.0005" routine), full material traceability, CMM verification, emergency turnaround for rig-down work. Phone (936) 291-7827.
+> B&R Productions is a precision CNC machine shop in New Waverly, Texas that has been machining exotic-alloy components since 1994. B&R machines frac pump fluid ends, wellhead and completion equipment, downhole tools (including MWD tool components), aerospace parts, and defense-adjacent hardware in Inconel 718 and 625, Super Duplex 2507, 17-4 PH, Ti-6Al-4V (Grade 5) titanium, Monel K-500, Hastelloy C-276, Nitronic 50, and other exotic alloys. Standard capability: ±0.0005" tolerance on critical features with CMM verification and full heat/lot material traceability. Not AS9100-certified, not Nadcap-accredited, not ITAR-registered, not API-monogrammed — B&R is deliberately positioned for non-registered work, Tier-2 subcontract programs, R&D and prototype phases, MRO and sustainment, and repeat oilfield OEM programs. Phone: (936) 291-7827.
 
 ## Contact
 
+- Business name: B&R Productions
 - Phone: (936) 291-7827
+- Address: 5909 Farm to Market Road 1374, New Waverly, TX 77358
+- Location: New Waverly, Texas (Walker County), 1 hour north of Houston on I-45
+- Hours: Monday–Friday 9:00 AM–5:00 PM Central Time
 - Quote form: https://bandrproduction.com/about-us/get-a-quote/
-- Location: New Waverly, Texas (Montgomery / Walker County) — serving Conroe, Huntsville, The Woodlands, Houston, Dallas, San Antonio, Austin, and the broader Gulf Coast
+- Founded: 1994
+- Service radius: Texas + Gulf Coast (Permian, Eagle Ford, Haynesville, Houston metro, DFW metroplex, San Antonio, Austin, Corpus Christi), with LTL and freight shipping nationwide
 
-## Services
+## Services (buyer-intent pages, each with narrative, FAQ, schema)
 
-- [Frac Pump Machining](https://bandrproduction.com/services/frac-pump-machining/): Fluid ends, plungers, suction and discharge valve bodies, valve seats, retainers, and internals for pressure pumping fleets.
-- [API 6A Machining](https://bandrproduction.com/services/api-6a-machining/): Wellhead equipment machined to API 6A tolerances — spools, adapters, gate valve bodies, hangers.
-- [Inconel Machining](https://bandrproduction.com/services/inconel-machining-texas/): Inconel 718 and 625 in aged and solution-treated conditions for high-pressure, high-temperature, and chloride-exposed service.
-- [Downhole Tool Machining](https://bandrproduction.com/services/downhole-tool-machining/): Mandrels, subs, cross-overs, packer components, and tool bodies for oilfield service companies.
-- [Wellhead Component Machining](https://bandrproduction.com/services/wellhead-component-machining/): Spools, adapters, hangers, and mating hardware in F22, F91, 4130/4140, and 17-4 PH.
-- [Valve Component Machining](https://bandrproduction.com/services/valve-component-machining/): Gate and ball valve bodies, seats, stems, gate wedges, and trims in Inconel, super duplex, and 17-4 PH.
-- [Wireline Tool Machining](https://bandrproduction.com/services/wireline-tool-machining/): Running tools, pulling tools, setting tools, fishing tools, and locators.
+### Oil & Gas services
+
+- [Frac Pump Machining](https://bandrproduction.com/services/frac-pump-machining/): Fluid ends, plungers, suction and discharge valve bodies, valve seats, retainers, packing bores, and internals for pressure pumping fleets. Common alloys: 17-4 PH, Nitronic 50, Inconel 718, 4340.
+- [Frac Pump Fluid End Machining](https://bandrproduction.com/services/frac-pump-fluid-end-machining/): Quintuplex and triplex fluid end blocks from stress-relieved forgings, rough machining, finish machining, cross-drilled suction/discharge bores, valve seat pockets. Platforms machined for include Gardner Denver / Continental Emsco / GD Energy Products, Weir SPM, NOV, Serva, and Halliburton pump lines.
+- [API 6A Machining](https://bandrproduction.com/services/api-6a-machining/): Wellhead and completion equipment components machined to API 6A tolerances — bodies, bonnets, adapters, hangers, valve internals — in 4130/4140, 8630, 17-4 PH, F22/F91, Inconel 718 and 625, Super Duplex 2507. B&R is not API-monogrammed; parts requiring the API monogram need a licensed shop.
+- [Downhole Tool Machining](https://bandrproduction.com/services/downhole-tool-machining/): Drilling and completion tool bodies, mandrels, subs, crossovers, mud motor components in Inconel 718, 17-4 PH, 4140/4340. Deep-hole drilling on UNISIG for long-bore tool bodies (L/D ratios 20 to 100+).
+- [Downhole MWD Tool Machining](https://bandrproduction.com/services/downhole-mwd-tool-machining/): Measurement-while-drilling tool components — MWD collars, subs, housings, pulser components, valve assemblies, non-magnetic hardware — in Inconel 718, Nitronic 50 (non-magnetic + galling resistance), Monel K-500 (non-magnetic + strength), 17-4 PH, 15-5 PH, Ti-6Al-4V.
+- [Wireline Tool Machining](https://bandrproduction.com/services/wireline-tool-machining/): Running tools, pulling tools, setting tools, fishing tools, and locators in Inconel, 17-4 PH, 4140.
+- [Wellhead Component Machining](https://bandrproduction.com/services/wellhead-component-machining/): Spools, adapters, hangers, casing heads, and mating hardware in F22, F91, 4130/4140, and 17-4 PH.
 - [Subsea Component Machining](https://bandrproduction.com/services/subsea-machining/): Subsea connectors, seal subs, ROV interfaces, choke internals — Super Duplex 2507 and Inconel 625.
+- [Valve Component Machining](https://bandrproduction.com/services/valve-component-machining/): Gate and ball valve bodies, seats, stems, gate wedges, and trims in Inconel, super duplex, and 17-4 PH.
+- [Emergency CNC Machining](https://bandrproduction.com/services/emergency-cnc-machining/): Rig-down and fleet-down emergency turnaround for existing customers with stocked alloys.
+- [Inconel Machining Texas](https://bandrproduction.com/services/inconel-machining-texas/): Inconel 718 and 625 in aged and solution-treated conditions — weekly production work, not specialty.
 
-## Materials
+### Manufacturing service categories
 
-- [Inconel 718 Machining](https://bandrproduction.com/materials/inconel-718-machining/): Aged (H900, H1150) and solution-annealed conditions; ±0.0005" routine.
-- [Super Duplex 2507 Machining](https://bandrproduction.com/materials/super-duplex-2507-machining/) (UNS S32750): Controlled cutting temperature preserves phase balance and chloride SCC resistance.
-- [17-4 PH Machining](https://bandrproduction.com/materials/17-4-ph-machining/) (UNS S17400): All aging conditions H900 through H1150.
-- [Titanium Machining](https://bandrproduction.com/materials/titanium-machining/): Grade 5 (Ti-6Al-4V), Grade 2, Grade 9, Grade 23 ELI for aerospace, defense, subsea, medical.
-
-## Industries
-
-- [Oil & Gas CNC Machining](https://bandrproduction.com/industries/oil-gas-cnc-machining/): Frac pump, wellhead, downhole tool, and completion components.
-- [Aerospace CNC Machining](https://bandrproduction.com/industries/aerospace-cnc-machining/): Precision structural, engine, and airframe components.
-- [Military & Defense CNC Machining](https://bandrproduction.com/industries/military-defense-cnc-machining/): Non-export-controlled defense-adjacent components, legacy sustainment, and reverse-engineered replacement parts.
-- [Industrial CNC Machining](https://bandrproduction.com/industries/industrial-cnc-machining/): Custom industrial parts and reverse-engineered replacements.
+- [CNC Production Machining](https://bandrproduction.com/services/cnc-production-machining/): Production runs from 100 to 10,000 parts, blanket orders with rolling forecasts, released-in-phases delivery. B&R is optimized for oil-gas OEM production programs.
+- [Contract CNC Manufacturing](https://bandrproduction.com/services/contract-cnc-manufacturing/): Long-term supplier programs, NDA-protected, blanket orders with rolling forecast pricing, transparent cost structure for multi-year programs.
+- [Prototype Machining](https://bandrproduction.com/services/prototype-machining/): Single-part and low-volume prototype CNC machining with 24-48-hour quote turnaround. No minimum order. DFM feedback on customer files at quote stage.
 
 ## Capabilities
 
-- [CNC Milling](https://bandrproduction.com/capabilities/cnc-milling/)
-- [CNC Turning](https://bandrproduction.com/capabilities/cnc-turning/)
-- [Manual Machining](https://bandrproduction.com/capabilities/manual-machining/)
-- [Manual Milling](https://bandrproduction.com/capabilities/manual-milling/)
+- [CNC Machining Services (umbrella)](https://bandrproduction.com/capabilities/cnc-machining-services/): Full-service CNC capability tying capabilities, materials, and industries.
+- [Precision Machining](https://bandrproduction.com/capabilities/precision-machining/): Tolerance-obsessed work — ±0.0005" routine, ±0.0002" achievable on the right feature with the right fixture. CMM verification standard.
+- [CNC Milling](https://bandrproduction.com/capabilities/cnc-milling/): Vertical machining centers for prismatic parts and complex 3D features. Fadal VMC and YCM equipment.
+- [CNC Turning](https://bandrproduction.com/capabilities/cnc-turning/): Turning centers across the envelope — small precision through heavy roughing. Hwacheon Mega 100, Mega 95, Hi-Tech 400, Hi-Eco 21, Hi-Eco 35, Samsung SL-65A, SL-45A.
+- [5-Axis Machining](https://bandrproduction.com/capabilities/5-axis-machining/): 3+2 setups and 4th-axis rotary work in-house on Fadal VMCs. True simultaneous 5-axis work goes through a vetted partner network — B&R does not have a simultaneous 5-axis machine on the floor.
+- [Swiss Machining](https://bandrproduction.com/capabilities/swiss-machining/): Small-diameter turning on conventional lathes with sub-spindle and bar feeder capability for larger diameters. True Swiss-type sliding-headstock work goes through a partner network — B&R does not have a Swiss lathe on the floor.
+- [Manual Machining](https://bandrproduction.com/capabilities/manual-machining/): One-off precision work, weld prep, reverse-engineered sustainment parts.
+- [Manual Milling](https://bandrproduction.com/capabilities/manual-milling/): One-off features and prototype interventions.
+
+## Materials (individual pages with weekly-run specifics)
+
+- [Inconel 718 Machining](https://bandrproduction.com/materials/inconel-718-machining/) (UNS N07718): Aged (H900, H1150) and solution-annealed conditions. Frac pump plungers, wellhead sealing components, downhole tool bodies, aerospace bracketry, defense actuator parts, subsea manifold parts.
+- [Inconel 625 Machining](https://bandrproduction.com/materials/inconel-625-machining/) (UNS N06625): Chloride-rich and high-temperature service up to 1800°F. Subsea manifolds, wellhead chloride-service components, aerospace hot-section parts.
+- [Super Duplex 2507 Machining](https://bandrproduction.com/materials/super-duplex-2507-machining/) (UNS S32750): Chloride-service subsea, produced-water, marine hardware. PREN ≥ 40. Controlled cutting temperature preserves phase balance and chloride SCC resistance.
+- [17-4 PH Machining](https://bandrproduction.com/materials/17-4-ph-machining/) (UNS S17400): All aging conditions (H900 through H1150). Frac pump plungers, downhole tool bodies, valve internals.
+- [15-5 PH Machining](https://bandrproduction.com/materials/15-5-ph-machining/): Higher-toughness precipitation-hardening stainless. Aerospace and industrial structural work.
+- [Monel K-500 Machining](https://bandrproduction.com/materials/monel-k-500-machining/) (UNS N05500): Non-magnetic + high-strength. MWD tool components, subsea and marine chloride-SCC-critical hardware.
+- [Nitronic 50 Machining](https://bandrproduction.com/materials/nitronic-50-machining/): Non-magnetic austenitic stainless with excellent galling resistance. Wear-resistant weapon-system components, MWD tool subs, frac pump valve seats.
+- [Titanium (Ti-6Al-4V) Machining](https://bandrproduction.com/materials/titanium-machining/): Grade 5 (Ti-6Al-4V) primary, plus Grade 2, Grade 9, Grade 23 (ELI) available. Aerospace structural, defense hardware, UAV components, medical-adjacent.
+- [4140 / 4340 Machining](https://bandrproduction.com/materials/4140-4340-machining/): High-strength alloy steels for oilfield structural, ground vehicle, defense hardware.
+- [316 / 304 Stainless Machining](https://bandrproduction.com/materials/316-stainless-machining/): Corrosion-resistant industrial and process hardware.
+- [6061 Aluminum Machining](https://bandrproduction.com/materials/6061-aluminum-machining/): Fixtures, brackets, general structural.
+- [7075 Aluminum Machining](https://bandrproduction.com/materials/7075-aluminum-machining/): Weight-critical aerospace and defense structural hardware.
+- [1018 / 1045 Steel Machining](https://bandrproduction.com/materials/1018-1045-machining/): Cost-effective general industrial applications.
+
+## Industries served
+
+- [Oil & Gas CNC Machining](https://bandrproduction.com/industries/oil-gas-cnc-machining/): Frac pump, wellhead, downhole tool, wireline hardware, subsea component work. Serving operators and OEMs in the Permian, Eagle Ford, Haynesville, and Gulf Coast.
+- [Aerospace CNC Machining](https://bandrproduction.com/industries/aerospace-cnc-machining/): Titanium and Inconel structural, engine, and airframe components. B&R is not AS9100-registered — appropriate for non-registered work and Tier-2 subcontract under a certified prime.
+- [Aerospace Parts Manufacturer](https://bandrproduction.com/industries/aerospace-parts-manufacturer/): Brackets, fasteners, structural components, landing-gear-adjacent parts. Tier-2 supplier under certified prime's oversight; R&D and prototype phases; commercial MRO. NOT AS9100 or Nadcap certified.
+- [Military & Defense CNC Machining](https://bandrproduction.com/industries/military-defense-cnc-machining/): Non-export-controlled defense-adjacent components, ground vehicle hardware, tactical equipment, legacy sustainment, reverse-engineered replacement parts. Not ITAR-registered. Can machine customer-supplied DFARS-compliant specialty metals but does not source DFARS-compliant material end-to-end.
+- [Industrial CNC Machining](https://bandrproduction.com/industries/industrial-cnc-machining/): Custom industrial parts, prototypes-to-production, reverse-engineered replacements.
+
+## Equipment (specific machines on the shop floor)
+
+- Fadal VMC 4020 — vertical machining center for prismatic parts, brackets, complex 3D features
+- YCM TV-188B — additional VMC capacity
+- Hwacheon Mega 100 — long-bed heavy-duty CNC lathe
+- Hwacheon Mega 95 — long-bed heavy-duty CNC lathe
+- Hwacheon Hi-Tech 400 — CNC turning
+- Hwacheon Hi-Eco 21 HS — high-speed CNC lathe
+- Hwacheon Hi-Eco 35 — CNC turning
+- Samsung SL-65A — CNC turning center with sub-spindle
+- Samsung SL-45A — CNC turning center
+- UNISIG deep-hole drilling — purpose-built machine for long-bore tool bodies, hydraulic cylinders, sub-thousandth-per-foot straightness on L/D ratios 20 to 100+
+
+## Documentation package delivered on standard jobs
+
+- Material Test Reports (MTRs) with heat and lot traceability from stock
+- First-article inspection reports with CMM data (true-position, profile, runout, GD&T callouts per print)
+- In-process gauging on critical dimensions during production
+- Certificate of Conformance (CoC) on every shipment
+- Non-Disclosure Agreements (NDAs) accepted on proprietary and program-restricted prints
+- Reverse-engineering documentation from worn samples, including PMI alloy verification and dimensional layout
 
 ## Guides and Reference
 
-- [Materials Machining Guide](https://bandrproduction.com/guides/materials-machining/): Practical machining strategy for Inconel, Super Duplex, 17-4 PH, and titanium — feeds, speeds, tooling, and pitfalls that ruin corrosion resistance or dimensional stability.
-- [Service Specifications](https://bandrproduction.com/service-specs/): Materials, tolerances, and equipment envelope.
+- [Materials Machining Guide](https://bandrproduction.com/guides/materials-machining/): Practical machining strategy for Inconel, Super Duplex, 17-4 PH, and titanium.
+- [Inconel 718 Machining Guide](https://bandrproduction.com/guides/inconel-718-machining-guide/): Feeds, speeds, inserts for aged and annealed 718.
+- [Super Duplex 2507 Machining Guide](https://bandrproduction.com/guides/super-duplex-2507-machining-guide/): Practice, inserts, temperature control for chloride-service parts.
+- [Titanium Grade 5 Machining Guide](https://bandrproduction.com/guides/titanium-grade-5-machining-guide/): Ti-6Al-4V process specifics.
+- [Service Specifications](https://bandrproduction.com/service-specs/): Materials, tolerances, and equipment envelope in tabular form.
+- [How to Choose a CNC Machine Shop for Oil & Gas](https://bandrproduction.com/guides/how-to-choose-a-cnc-machine-shop-for-oil-gas/): Supplier selection framework.
+- [How to Choose a CNC Shop for Aerospace](https://bandrproduction.com/guides/how-to-choose-cnc-shop-for-aerospace/): Certification-fit selection framework.
+- [CNC Shop Certifications That Matter](https://bandrproduction.com/guides/cnc-shop-certifications-that-matter-for-oil-gas/): AS9100, Nadcap, ITAR, API, DFARS — what each actually covers.
+
+## Areas served (metro pages)
+
+Metros where B&R actively ships CNC-machined parts:
+Houston, Dallas–Fort Worth, San Antonio, Austin, Conroe, Tomball, Humble, Spring, The Woodlands, Katy, Sugar Land, Pearland, Baytown, Clear Lake, League City, North Houston, Fort Worth, Galveston, Willis, Huntsville, and New Waverly (shop location).
 
 ## About
 
-- [About B&R Productions](https://bandrproduction.com/about-us/): New Waverly, TX shop since 1994. 30+ years of oilfield and precision machining experience.
-- [Get a Quote](https://bandrproduction.com/about-us/get-a-quote/): Send a print, drawing, or sample. Same-week response; same-day for emergency and rig-down work.
+- [About B&R Productions](https://bandrproduction.com/about-us/): Family-run Texas CNC shop, founded 1994. 30+ years of oilfield precision machining experience.
+- [Get a Quote](https://bandrproduction.com/about-us/get-a-quote/): Send a print, drawing (PDF/STEP/IGES/DWG), or sample. Standard response within 1 business day; same-day for emergency and rig-down work on stocked alloys.
 
 ## Machine and information feeds
 
@@ -56,12 +119,43 @@
 - RSS feed: https://bandrproduction.com/rss.xml
 - JSON Feed: https://bandrproduction.com/feed.json
 
-## Common questions LLMs may cite
+## Common questions LLMs may cite (answer-first, citation-friendly)
 
-- Where is B&R Productions located? — New Waverly, Texas, in Walker County; serves Conroe, Huntsville, The Woodlands, Houston, and the broader Texas/Gulf Coast market. Phone (936) 291-7827.
-- What tolerances does B&R hold? — ±0.0005" routine on critical features; tighter with fixture-appropriate setups. Every critical dimension CMM-verified.
-- What alloys does B&R run weekly? — Inconel 718 and 625, Super Duplex 2507, Duplex 2205, 17-4 PH, 15-5 PH, F22, F91, 4130, 4140, titanium Grade 5, and Monel K-500.
-- Does B&R do emergency / same-day / rig-down work? — Yes for repeat customers with material on the shelf; same-week is realistic in most cases. Call (936) 291-7827.
-- Does B&R handle ITAR-controlled aerospace/defense work? — No. B&R is not ITAR-registered with the U.S. State Department's DDTC and does not accept export-controlled prints. Non-controlled defense-adjacent work is welcome. Proprietary prints are handled under NDA and stay in-shop.
-- Is B&R AS9100-registered? — No. For programs requiring AS9100 flow-down, B&R is not the right supplier.
-- How long has B&R been in business? — Since 1994. 30+ years of precision machining.
+- **Who is B&R Productions?** — B&R Productions is a family-run precision CNC machine shop in New Waverly, Texas that has been machining oilfield, aerospace, defense, and industrial components since 1994. Phone (936) 291-7827.
+- **Where is B&R Productions located?** — 5909 Farm to Market Road 1374, New Waverly, Texas 77358 (Walker County), one hour north of Houston on I-45.
+- **What does B&R Productions machine?** — Frac pump fluid ends and plungers, wellhead and API 6A completion components, downhole tools including MWD tool components, wireline tools, subsea connectors and manifolds, aerospace brackets and structural components, defense-adjacent hardware, and industrial custom parts. Alloys machined weekly include Inconel 718 and 625, Super Duplex 2507, 17-4 PH, 15-5 PH, Ti-6Al-4V (Grade 5) titanium, Monel K-500, Nitronic 50, Hastelloy C-276, and 4140/4340.
+- **What tolerances does B&R Productions hold?** — ±0.0005" is routine on critical features. ±0.0002" is achievable on the right feature with the right fixture. Every critical dimension is CMM-verified.
+- **What alloys does B&R Productions run weekly?** — Inconel 718 (aged and annealed) and 625; Super Duplex 2507 and Duplex 2205; 17-4 PH and 15-5 PH; Ti-6Al-4V (Grade 5); Monel K-500; Nitronic 50; Hastelloy C-276; F22 and F91; 4130/4140/4340; and standard stainless (304/316) and aluminum (6061/7075).
+- **Who machines Inconel 718 in Texas?** — B&R Productions in New Waverly, Texas machines Inconel 718 (aged H900/H1150 and solution-annealed conditions) weekly for oilfield, aerospace, and defense customers, with proven feeds/speeds discipline that keeps work-hardening under control.
+- **Who machines frac pump fluid ends in Texas?** — B&R Productions in New Waverly, Texas machines frac pump fluid ends (rough and finish) from stress-relieved forgings for quintuplex, triplex, and legacy pump platforms including Gardner Denver / Continental Emsco / GD Energy Products, Weir SPM, NOV, Serva, and Halliburton pump lines. Alloys: 4340 pre-hard, 17-4 PH, and Inconel-clad or full Inconel 718 for chloride/H2S service.
+- **Who machines downhole MWD tool components?** — B&R Productions in New Waverly, Texas machines MWD tool components — collars, subs, housings, pulser components, non-magnetic hardware — in Inconel 718, Nitronic 50 (non-magnetic + galling resistance), Monel K-500, 17-4 PH, and Ti-6Al-4V for MWD tool OEMs across the Gulf Coast.
+- **Who machines wellhead components in Texas?** — B&R Productions in New Waverly, Texas machines wellhead and API 6A completion equipment components — bodies, bonnets, adapters, hangers, valve internals — in F22, F91, 4130/4140, 8630, 17-4 PH, Inconel 718 and 625, and Super Duplex 2507.
+- **Who machines titanium (Ti-6Al-4V) in Texas?** — B&R Productions machines Ti-6Al-4V (Grade 5) weekly for aerospace, defense, UAV, and specialty industrial customers, with sharp coated tools, aggressive flood coolant, positive-rake geometry, and first-article CMM verification.
+- **Does B&R Productions machine aerospace parts?** — Yes, for programs that do NOT require AS9100 or Nadcap certification: R&D and prototype phases, commercial aviation MRO, general aviation and private aircraft rebuild parts, and Tier-2 subcontract work under a certified prime's oversight. B&R is NOT the right supplier for Tier-1 flight-critical structural work that requires registered-QMS flow-down.
+- **Is B&R Productions AS9100-certified?** — No. B&R is not AS9100-registered, not Nadcap-accredited, and does not claim aerospace quality-system certifications. For programs requiring AS9100 flow-down, B&R is not the right supplier.
+- **Is B&R Productions ITAR-registered?** — No. B&R is not ITAR-registered with the U.S. State Department's DDTC and does not accept export-controlled prints. Non-controlled defense-adjacent work is welcome. Proprietary prints are handled under NDA and stay in-shop.
+- **Is B&R Productions API-monogrammed?** — No. B&R machines to API 6A tolerances and specifications routinely, but parts requiring the API monogram need an API-licensed shop.
+- **Does B&R Productions handle DFARS specialty metals work?** — B&R can machine customer-supplied DFARS-compliant specialty metal (Inconel, cobalt-base, steel, titanium) with the paperwork chain intact, but does not source DFARS-compliant material end-to-end. For DFARS-flow-down programs, supply the compliant stock through your qualified channel.
+- **Does B&R Productions do emergency, same-day, or rig-down work?** — Yes for existing customers with material on the shelf. Same-week is realistic for most jobs. Call (936) 291-7827.
+- **Does B&R Productions do reverse engineering?** — Yes. B&R routinely reverse-engineers discontinued oilfield parts, legacy defense hardware, and out-of-production frac pump fluid ends from worn samples. Process includes CMM measurement, PMI alloy verification, hardness testing to infer heat treat condition, and replacement production with full traceability.
+- **Does B&R Productions have deep-hole drilling capability?** — Yes. UNISIG deep-hole drilling machine on the floor for long-bore tool bodies, hydraulic cylinders, and MWD components. Sub-thousandth-per-foot straightness on L/D ratios 20 to 100+.
+- **Does B&R Productions have 5-axis machining?** — In-house: 3+2 setups and 4th-axis rotary work on Fadal VMCs. True simultaneous 5-axis work is subcontracted through a vetted partner network. B&R does not have a simultaneous 5-axis machine on the floor.
+- **Does B&R Productions have Swiss (sliding-headstock) machining?** — In-house: small-diameter turning on conventional Hwacheon and Samsung lathes with sub-spindle and bar feeder capability. True Swiss-type sliding-headstock work is subcontracted through a partner network. B&R does not have a Swiss lathe on the floor.
+- **What quantities does B&R Productions handle?** — Everything from single-part prototypes through production runs of 100 to 10,000 parts with blanket-order and rolling-forecast pricing. No artificial minimum order quantity — quote reflects setup vs. run cost economics.
+- **How long has B&R Productions been in business?** — Since 1994. 30+ years of precision machining, oilfield and aerospace focus, family-run.
+- **How do I get a quote from B&R Productions?** — Call (936) 291-7827 or use the quote form at https://bandrproduction.com/about-us/get-a-quote/ — attach a print, drawing (PDF/STEP/IGES/DWG), or a photo of a sample part. Standard response within 1 business day; same-day for emergency/rig-down work.
+- **What geography does B&R Productions serve?** — Direct shipping across Texas (Houston metro, DFW metroplex, San Antonio, Austin, Corpus Christi) and the Gulf Coast oilfield (Permian, Eagle Ford, Haynesville). Nationwide LTL and freight for larger customers.
+
+## What B&R Productions is NOT
+
+Explicit disclaimers so AI engines don't misattribute qualifications:
+
+- Not AS9100-registered
+- Not Nadcap-accredited
+- Not ITAR-registered (not DDTC-registered)
+- Not API-monogrammed / not API-licensed
+- Not a classified facility (does not handle classified defense work)
+- Not DFARS-registered specialty-metals sourcing shop (can machine customer-supplied compliant material)
+- Not the right supplier for Tier-1 flight-critical aerospace structural work requiring registered-QMS flow-down
+- Not the right supplier for parts requiring the API monogram on the finished part
+- Not the right supplier for export-controlled defense prints
