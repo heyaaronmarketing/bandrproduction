@@ -1778,6 +1778,143 @@ async function ranksForDashboard(request, env) {
 // Query params:
 //   ?days=N     — pull leads from last N days (default 30, max 400)
 //   ?force=1    — ignore the 90-day dedupe and generate even if asked recently
+// GET /admin/leads/list?token=X&days=N&min_score=0
+// Read-only dump of every lead captured to LEADS_KV, with a per-lead
+// substance score so real leads sort ahead of spam. Zero side effects.
+// Uses the same heuristics the live spam filter uses in handleQuote,
+// but scores rather than blocks (so historical leads captured BEFORE
+// spam filters landed still get evaluated).
+async function leadsList(request, env) {
+  const auth = _adminAuth(request, env); if (!auth.ok) return auth.response;
+  if (!env.LEADS_KV) return json({ ok: false, error: "LEADS_KV not bound" }, 400);
+  const url = new URL(request.url);
+  const days = Math.min(400, Math.max(1, parseInt(url.searchParams.get("days") || "400", 10)));
+  const minScore = parseInt(url.searchParams.get("min_score") || "-999", 10);
+  const cutoff = Date.now() - days * 24 * 60 * 60 * 1000;
+
+  const leads = [];
+  let cursor = undefined;
+  do {
+    const list = await env.LEADS_KV.list({ prefix: "lead:", cursor, limit: 1000 });
+    for (const k of list.keys) {
+      const ts = parseInt(k.name.split(":")[1] || "0", 10);
+      if (ts < cutoff) continue;
+      const raw = await env.LEADS_KV.get(k.name);
+      if (!raw) continue;
+      try {
+        const l = JSON.parse(raw);
+        leads.push({ ...l, _key: k.name });
+      } catch { /* skip malformed */ }
+    }
+    cursor = list.list_complete ? undefined : list.cursor;
+  } while (cursor);
+
+  const SPAM_KEYWORDS = [
+    "seo services","guaranteed rankings","backlinks package","guest post",
+    "increase your ranking","top ranking","search engine optimization",
+    "buy real followers","casino","online casino","crypto trading","cryptocurrency",
+    "bitcoin investment","forex trading","cbd oil","vashikaran","weight loss pills",
+    "adult webcam","dating site","essay writing service","porn","loan offer",
+    "make money fast","viagra","cialis",
+  ];
+  const DISPOSABLE = [
+    "mailinator","guerrillamail","tempmail","10minutemail","throwaway","yopmail",
+    "trashmail","sharklasers","getnada","maildrop","dispostable","fakeinbox",
+    "tempinbox","tempr.email","disposable","mintemail","mailnesia","spam4.me","mailsac",
+  ];
+  const FREE_EMAIL = ["gmail.com","yahoo.com","hotmail.com","outlook.com","aol.com","icloud.com","proton.me","protonmail.com"];
+
+  function score(l) {
+    let s = 50;                  // baseline neutral
+    const reasons = [];
+    const msg = String(l.message || "");
+    const msgLC = msg.toLowerCase();
+    const email = String(l.email || "").toLowerCase();
+    const name = String(l.name || "").trim();
+    const company = String(l.company || "").trim();
+    const phone = String(l.phone || "").trim();
+
+    // Boost signals (real-lead indicators)
+    if (name.split(/\s+/).length >= 2) { s += 10; reasons.push("+10 full name"); }
+    if (company) { s += 15; reasons.push("+15 company"); }
+    if (phone && phone.replace(/\D/g,"").length >= 10) { s += 15; reasons.push("+15 phone"); }
+    if (msg.length >= 40) { s += 10; reasons.push("+10 msg≥40ch"); }
+    if (msg.length >= 200) { s += 10; reasons.push("+10 msg≥200ch"); }
+    // Machine-shop-relevant vocabulary in message
+    const shopVocab = /\b(quote|rfq|tolerance|inconel|titanium|stainless|hastelloy|monel|super\s*duplex|17-4|4140|4340|6061|7075|machining|milling|turning|cnc|fixture|prototype|production|part|drawing|print|step|iges|dxf|dwg|first\s*article|cmm|mtr|api|aerospace|defense|oilfield|frac|wellhead|downhole|drill|drilling|deep\s*hole|thread|surface\s*finish|ppap|itar|dfars|as9100|nadcap)\b/gi;
+    const vocabHits = (msg.match(shopVocab) || []).length;
+    if (vocabHits >= 1) { s += 15; reasons.push(`+15 shop-vocab×${vocabHits}`); }
+    if (vocabHits >= 4) { s += 10; reasons.push("+10 vocab-dense"); }
+    // Business-email plus
+    const emailDomain = email.split("@")[1] || "";
+    if (email && !FREE_EMAIL.includes(emailDomain)) { s += 10; reasons.push("+10 biz-email"); }
+
+    // Penalty signals (spam-lead indicators)
+    if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { s -= 40; reasons.push("−40 bad email"); }
+    if (!name) { s -= 20; reasons.push("−20 no name"); }
+    if (!msg) { s -= 20; reasons.push("−20 no message"); }
+    // URL flood
+    const urlCount = (msg.match(/https?:\/\/[^\s]+|www\.[^\s]+/gi) || []).length;
+    if (urlCount >= 1) { s -= 15 * urlCount; reasons.push(`−${15*urlCount} url×${urlCount}`); }
+    // Cyrillic/CJK dominance (near-zero legit for a TX CNC shop)
+    const cyrillic = (msg.match(/[Ѐ-ӿ]/g) || []).length;
+    const cjk = (msg.match(/[一-鿿]/g) || []).length;
+    if (cyrillic + cjk > 5) { s -= 40; reasons.push(`−40 cyrillic/cjk×${cyrillic+cjk}`); }
+    // Spam keywords
+    const keywordHits = SPAM_KEYWORDS.filter(k => msgLC.includes(k));
+    if (keywordHits.length) { s -= 30 * keywordHits.length; reasons.push(`−${30*keywordHits.length} spam-kw: ${keywordHits.join(",")}`); }
+    // Disposable email domain
+    if (DISPOSABLE.some(d => emailDomain.includes(d))) { s -= 50; reasons.push("−50 disposable-email"); }
+    // Honeypot / time-gate signals (if the lead carries a _gotcha or _form_loaded_ms trigger note)
+    if (l._spam_reason) { s -= 40; reasons.push(`−40 spam_reason: ${l._spam_reason}`); }
+    // All-caps shouting message
+    if (msg.length >= 40 && msg === msg.toUpperCase()) { s -= 15; reasons.push("−15 all-caps"); }
+    // Suspicious name patterns (single word, non-alpha)
+    if (name && !/\s/.test(name) && name.length < 4) { s -= 15; reasons.push("−15 tiny-name"); }
+    // Message is a pure email or URL
+    if (msg && /^[\s\S]{1,100}$/.test(msg) && /^(https?:\/\/|www\.|\S+@\S+)/i.test(msg.trim())) {
+      s -= 25; reasons.push("−25 msg-is-link/email");
+    }
+
+    return { score: s, reasons };
+  }
+
+  const scored = leads.map((l) => {
+    const { score: s, reasons } = score(l);
+    const first_seen_iso = new Date(l.ts).toISOString();
+    return {
+      score: s,
+      verdict: s >= 80 ? "REAL" : (s >= 50 ? "PROBABLY-REAL" : (s >= 20 ? "SUSPICIOUS" : "SPAM")),
+      first_seen: first_seen_iso,
+      first_seen_local: new Date(l.ts).toString().slice(0, 24),
+      name: l.name || null,
+      email: l.email || null,
+      phone: l.phone || null,
+      company: l.company || null,
+      source: l.source || null,
+      message: l.message || null,
+      message_len: (l.message || "").length,
+      review_ask_sent_at: l.review_ask_sent_at || null,
+      scoring: reasons,
+    };
+  });
+
+  scored.sort((a, b) => b.score - a.score || (new Date(b.first_seen) - new Date(a.first_seen)));
+  const filtered = scored.filter(x => x.score >= minScore);
+  const summary = {
+    total: scored.length,
+    real: scored.filter(x => x.verdict === "REAL").length,
+    probably_real: scored.filter(x => x.verdict === "PROBABLY-REAL").length,
+    suspicious: scored.filter(x => x.verdict === "SUSPICIOUS").length,
+    spam: scored.filter(x => x.verdict === "SPAM").length,
+    window_days: days,
+    oldest: scored.length ? scored[scored.length - 1].first_seen : null,
+    newest: scored.length ? scored[0].first_seen : null,
+  };
+
+  return json({ ok: true, summary, leads: filtered });
+}
+
 async function reviewRequestGenerate(request, env) {
   const auth = _adminAuth(request, env); if (!auth.ok) return auth.response;
   if (!env.LEADS_KV) return json({ ok: false, error: "LEADS_KV not bound" }, 400);
@@ -2719,6 +2856,7 @@ export default {
     if (p === "/dashboard/api/citations" && request.method === "GET")   return citationsForDashboard(request, env);
     if (p === "/dashboard/api/ranks"     && request.method === "GET")   return ranksForDashboard(request, env);
     if (p === "/admin/review-requests/generate" && request.method === "POST") return reviewRequestGenerate(request, env);
+    if (p === "/admin/leads/list"        && request.method === "GET")  return leadsList(request, env);
     if (p === "/admin/ranks/refresh"     && request.method === "POST") {
       const a = _adminAuth(request, env); if (!a.ok) return a.response;
       ctx.waitUntil((async () => {
