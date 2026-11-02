@@ -44,7 +44,35 @@ a{color:var(--brand)}
 .site-nav .cta:hover{background:var(--brand-2);color:#fff!important}
 .site-nav .phone{color:#fff!important;font-weight:600;padding-left:18px;border:1.5px solid rgba(255,255,255,0.25);border-radius:8px;padding:8px 18px;margin-left:8px}
 .site-nav .phone:hover{color:var(--brand)!important;border-color:var(--brand)}
-@media (max-width:900px){.site-header .wrap{padding:12px 18px}.site-header .brand img{height:44px}.site-nav>a,.site-nav>.has-menu>span{padding:6px 10px;font-size:14px}.site-nav .menu{position:static;box-shadow:none;border:0;opacity:1;visibility:visible;transform:none;padding:0 0 0 12px;min-width:0}.site-nav .menu a{padding:4px 8px;font-size:13px}}
+
+/* Hamburger button — hidden on desktop, shown on mobile */
+.nav-toggle{display:none;background:none;border:0;cursor:pointer;padding:10px;flex-direction:column;gap:5px;align-items:center;justify-content:center;margin-left:auto}
+.nav-toggle span{display:block;width:26px;height:2px;background:#fff;border-radius:2px;transition:transform .22s ease,opacity .18s ease}
+.site-header.open .nav-toggle span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.site-header.open .nav-toggle span:nth-child(2){opacity:0}
+.site-header.open .nav-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+@media (max-width:900px){
+  .site-header .wrap{padding:14px 18px;flex-wrap:nowrap}
+  .site-header .brand img{height:48px;max-width:180px}
+  .nav-toggle{display:flex}
+  /* Hide the nav by default on mobile; reveal when .open on header */
+  .site-nav{display:none;width:100%;flex-basis:100%;flex-direction:column;align-items:stretch;background:#0d0d0d;margin:12px -18px -14px;padding:8px 0 16px;border-top:1px solid #1a1a1a;gap:0;max-height:calc(100vh - 90px);overflow-y:auto}
+  .site-header.open .site-nav{display:flex}
+  /* Each top-level nav item becomes a full-width row */
+  .site-nav>a,.site-nav>.has-menu>span,.site-nav .cta,.site-nav .phone{display:block;width:100%;padding:14px 20px;margin:0;border-radius:0;border:none;box-sizing:border-box;text-align:left;font-size:16px;line-height:1.4;border-top:1px solid #1a1a1a;color:#fff}
+  .site-nav>a:first-child{border-top:0}
+  .site-nav .phone{text-align:center;border:0;border-top:1px solid #1a1a1a;margin-top:8px}
+  .site-nav .cta{background:var(--brand);text-align:center;margin:12px 20px 4px;width:auto;border-radius:8px;padding:14px 22px}
+  /* Dropdowns on mobile — collapsed by default, expand when .open on parent */
+  .site-nav .has-menu{position:static;width:100%}
+  .site-nav .has-menu>span{position:relative;cursor:pointer;user-select:none}
+  .site-nav .has-menu>span::after{position:absolute;right:22px;top:50%;margin:0;transform:translateY(-70%) rotate(45deg);transition:transform .18s ease;border-right-width:2px;border-bottom-width:2px;width:9px;height:9px}
+  .site-nav .has-menu.open>span::after{transform:translateY(-30%) rotate(-135deg)}
+  .site-nav .has-menu .menu{position:static;display:none;opacity:1;visibility:visible;transform:none;box-shadow:none;border:0;border-radius:0;background:#0a0a0a;padding:0;margin:0;max-width:none;min-width:0;width:100%}
+  .site-nav .has-menu.open .menu{display:block}
+  .site-nav .has-menu .menu a{padding:12px 20px 12px 38px;font-size:14.5px;border-top:1px solid #1a1a1a;color:#c9d1da;white-space:normal}
+}
 
 main{padding:36px 0 48px}
 h1{font-size:40px;line-height:1.12;margin:8px 0 12px;color:var(--ink);font-weight:800;letter-spacing:-.01em}
@@ -163,7 +191,10 @@ main{padding-top:0!important;padding-bottom:0!important}
 <header class="site-header">
   <div class="wrap">
     <a class="brand" href="/"><img src="/_external/cdn.durable.co/logos/1j4ujsX3V5OxBUNNRVRtb7xgibPSC6Jo9Vy5zagDpVZR2nGtGCECAWXsauOZ9C2J.png" alt="B&R Productions"/></a>
-    <nav class="site-nav" aria-label="Main navigation">
+    <button class="nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="site-nav">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="site-nav" id="site-nav" aria-label="Main navigation">
       <a href="/">Home</a>
       <div class="has-menu"><span tabindex="0">Industries</span>
         <ul class="menu">
@@ -196,6 +227,36 @@ main{padding-top:0!important;padding-bottom:0!important}
       <a class="cta" href="/about-us/get-a-quote/">Start a Job</a>
     </nav>
   </div>
+<script>
+/* Mobile nav: hamburger toggles the whole menu; each dropdown toggles on tap. */
+(function(){
+  var h=document.querySelector('.site-header');if(!h)return;
+  var t=h.querySelector('.nav-toggle');
+  if(t){t.addEventListener('click',function(){
+    var o=h.classList.toggle('open');
+    t.setAttribute('aria-expanded',o?'true':'false');
+  });}
+  h.querySelectorAll('.has-menu > span').forEach(function(s){
+    s.addEventListener('click',function(e){
+      if(window.innerWidth<=900){
+        e.preventDefault();e.stopPropagation();
+        s.parentNode.classList.toggle('open');
+      }
+    });
+    s.addEventListener('keydown',function(e){
+      if((e.key==='Enter'||e.key===' ')&&window.innerWidth<=900){
+        e.preventDefault();s.parentNode.classList.toggle('open');
+      }
+    });
+  });
+  /* Close the hamburger when a leaf link is tapped */
+  h.querySelectorAll('.site-nav a').forEach(function(a){
+    a.addEventListener('click',function(){
+      if(window.innerWidth<=900){h.classList.remove('open');if(t)t.setAttribute('aria-expanded','false');}
+    });
+  });
+})();
+</script>
 </header>
 <main>
 
