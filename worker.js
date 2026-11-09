@@ -814,21 +814,24 @@ async function gscSummary(env, days) {
   try {
     const token = await getGoogleToken(env, "GSC_SERVICE_ACCOUNT_JSON", "https://www.googleapis.com/auth/webmasters.readonly");
     const url = `https://searchconsole.googleapis.com/webmasters/v3/sites/${encodeURIComponent(site)}/searchAnalytics/query`;
-    async function q(dims) {
+    async function q(dims, limit) {
       const r = await fetch(url, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-        body: JSON.stringify({ startDate, endDate, dimensions: dims, rowLimit: 25 }),
+        body: JSON.stringify({ startDate, endDate, dimensions: dims, rowLimit: limit || 25 }),
       });
       const j = await r.json();
       if (!r.ok) throw new Error(`GSC ${r.status}: ${j.error && j.error.message || ""}`);
       return j.rows || [];
     }
-    const [queries, pages] = await Promise.all([q(["query"]), q(["page"])]);
-    const totClicks = queries.reduce((a, x) => a + (x.clicks || 0), 0);
-    const totImp = queries.reduce((a, x) => a + (x.impressions || 0), 0);
-    const avgPos = queries.length ? queries.reduce((a, x) => a + (x.position || 0), 0) / queries.length : 0;
-    return { ok: true, configured: true, site, days, totals: { clicks: totClicks, impressions: totImp, avgPosition: Number(avgPos.toFixed(1)) }, queries, pages };
+    // Dimension-free query = true site totals (not top-N sum)
+    const [totalsRows, queries, pages] = await Promise.all([q([], 1), q(["query"]), q(["page"])]);
+    const tot = totalsRows[0] || {};
+    return {
+      ok: true, configured: true, site, days,
+      totals: { clicks: tot.clicks || 0, impressions: tot.impressions || 0, avgPosition: Number((tot.position || 0).toFixed(1)) },
+      queries, pages,
+    };
   } catch (e) {
     return { ok: false, configured: true, error: String(e && e.message || e) };
   }
@@ -2247,7 +2250,23 @@ async function caseStudyJson(request, env, ctx) {
   let bing = null;
   try {
     const b = await bingSummary(env);
-    if (b && b.ok) bing = { clicks: b.clicks || 0, impressions: b.impressions || 0, rank_avg: b.rank_avg || null };
+    if (b && b.ok && b.configured) {
+      const stats = b.stats || [];
+      let bClicks = 0, bImp = 0, posSum = 0, posN = 0;
+      for (const d of stats) {
+        bClicks += d.Clicks || 0;
+        bImp += d.Impressions || 0;
+        if (d.AvgImpressionPosition != null) { posSum += d.AvgImpressionPosition; posN++; }
+      }
+      const topQueries = (b.queries || []).slice(0, 20).map(r => ({ query: r.Query, clicks: r.Clicks || 0, impressions: r.Impressions || 0, position: Number(((r.AvgImpressionPosition) || 0).toFixed(1)) }));
+      bing = {
+        clicks: bClicks,
+        impressions: bImp,
+        rank_avg: posN ? Number((posSum / posN).toFixed(1)) : null,
+        days: stats.length,
+        top_queries: topQueries,
+      };
+    }
   } catch (e) { /* skip */ }
 
   // --- AI bot crawl + AI referral counts from LEADS_KV telemetry ---
