@@ -99,14 +99,14 @@ A: 2–4 weeks in stocked material; 4–8 weeks if material needs to come from m
 
 Source: https://bandrproduction.com/materials/17-4-ph-machining/
 
-Q: Do you machine in Condition A or aged?
-A: Both. Condition A (~30 HRC) machines like a standard stainless and can be aged after machining. H900 (~42 HRC) is machined to final size — harder work but no post-machining heat-treat distortion. Choice depends on tolerance and geometry.
+Q: What 17-4 PH conditions can you machine?
+A: All standard aging conditions — H900, H925, H1025, H1075, H1100, H1150 — plus solution-annealed (Condition A). We quote based on the condition you spec.
 
-Q: How do you prevent work hardening on aged 17-4?
-A: Sharp coated carbide inserts, aggressive feed (never let the tool dwell), positive-rake geometry, and disciplined SFM. Dull tools work-harden the surface, then subsequent passes cut in harder material.
+Q: Do you handle post-machining heat treatment?
+A: We coordinate with trusted local heat-treat partners and can leave the right stock for post-treat finish operations. If your part needs specific final dimensions after aging, tell us in the RFQ.
 
-Q: What tolerances do you hold?
-A: ±0.0005" is routine. Aged 17-4 has less springback than 316 stainless — actually a friendly alloy at close tolerance.
+Q: Can you machine 15-5 PH and other PH stainlesses?
+A: Yes — 15-5 PH and 13-8 Mo are in our regular work mix.
 
 ---
 
@@ -114,20 +114,14 @@ A: ±0.0005" is routine. Aged 17-4 has less springback than 316 stainless — ac
 
 Source: https://bandrproduction.com/materials/titanium-machining/
 
-Q: Do you handle DFARS-compliant titanium?
-A: We machine it, but we don't source it as DFARS-certified — B&R doesn't run a DFARS specialty-metals compliance program. If your program flows DFARS down, supply the Ti-6Al-4V through a compliant channel and we'll machine it with full MTR and heat/lot traceability. For non-DFARS titanium work we source and machine start to finish.
-
 Q: What titanium grades do you machine?
-A: Ti-6Al-4V (Grade 5) is our primary titanium. Other grades (2, 4, 9, 23 ELI) available on request depending on program requirements and material availability.
+A: Grade 5 (Ti-6Al-4V) is the workhorse, followed by Grade 2 (CP titanium), Grade 9, and Grade 23 (ELI) for medical/aerospace applications.
 
-Q: What's the typical lead time on titanium work?
-A: 2–5 weeks for standard aerospace parts in stocked Ti-6Al-4V. Longer if the specific plate/bar spec needs to come from a specific mill run.
+Q: Can you handle ITAR-controlled aerospace/defense titanium work?
+A: No — B&R is not ITAR-registered, so export-controlled prints need a registered facility. Non-controlled titanium work for aerospace and defense is regular business here, and proprietary prints stay in-shop under NDA.
 
-Q: What makes titanium machining different from stainless or aluminum?
-A: Titanium machining concentrates cutting heat at the tool tip because titanium has poor thermal conductivity — the heat can't escape into the chip or workpiece. Combined with titanium's tendency to gall and spring back, that means dull tools fail catastrophically fast. B&R's titanium machining practice: sharp coated inserts changed on schedule (not on wear), aggressive flood coolant, positive-rake geometry, controlled DOC to keep chip load in the sweet spot, and first-article CMM to catch any springback drift before it accumulates.
-
-Q: Which industries do you serve for titanium machining?
-A: Titanium machining at B&R primarily serves aerospace (airframe brackets, engine mount hardware, structural fittings), defense (UAV components, weapon subsystem parts, lightweight structural), and specialty industrial (chemical process hardware, marine components). Medical-adjacent titanium machining is available for non-implant applications — implantable-grade certification is a separate program we don't currently hold.
+Q: What tolerances do you hold on titanium?
+A: ±0.0005" routine on critical features. Tighter with the right fixture and setup. Surface finish measured to spec.
 
 ---
 
@@ -147,20 +141,14 @@ A: K-500 (age-hardenable, higher strength) is what we run most. Monel 400 (solid
 
 Source: https://bandrproduction.com/materials/inconel-718-machining/
 
-Q: Do you machine both solution-annealed and aged Inconel 718?
-A: Yes. Solution-annealed for weldability and easier machining. Aged (H900 typical) for full mechanical properties. Machining discipline differs — aged 718 requires sharper tooling, disciplined feeds, and lower SFM to prevent work hardening.
+Q: What Inconel 718 condition can you machine?
+A: All of them. Aged (H900 through H1150), solution-annealed, and customer-supplied heat-treat conditions. We ask which condition you need before we quote.
 
-Q: What tolerances do you hold on Inconel 718?
-A: ±0.0005" on critical dimensions is routine. Aged 718's springback and work-hardening tendency require careful in-process gauging.
+Q: What tolerances can you hold on 718?
+A: ±0.0005" routine on critical features. Tighter on the right feature with the right fixture. Every critical dimension CMM-verified.
 
-Q: What's your typical Inconel 718 lead time?
-A: 1–3 weeks for standard oilfield or aerospace parts in stocked material. Longer if the alloy needs to come from the mill. Same-day to next-day for emergency work on existing customers with stocked stock.
-
-Q: What makes Inconel 718 machining difficult, and how does B&R handle it?
-A: Inconel 718 machining is difficult because the alloy work-hardens under improper cutting conditions — dull tools, low feeds, or interrupted contact instantly harden the surface and destroy the next pass. The material's high strength at temperature also concentrates heat at the cutting edge. B&R runs Inconel 718 with sharp coated inserts, aggressive-but-controlled feed rates that keep the tool cutting fresh material, dedicated coolant flow, and proven speeds per condition (aged vs annealed). We treat every Inconel 718 job the same way — as production work, not a one-off experiment.
-
-Q: What Inconel 718 parts do you regularly machine?
-A: Inconel 718 machining at B&R covers downhole tool bodies (drilling and completion), wellhead spools and adapters, frac pump plungers and valve components, aerospace engine and exhaust hardware, defense aviation structural parts, and subsea manifold components. Aged (H900) is our typical condition for oilfield mechanical parts; solution-annealed for aerospace parts that need welding.
+Q: Do you machine other nickel-based superalloys too?
+A: Yes — Inconel 625, Hastelloy C-276, Waspaloy, A286, Monel. Same discipline, similar tooling strategy.
 
 ---
 
@@ -180,14 +168,14 @@ A: About as difficult as 316 stainless — sharp tooling, moderate feeds. Work h
 
 Source: https://bandrproduction.com/materials/super-duplex-2507-machining/
 
-Q: Why is temperature control so critical on Super Duplex machining?
-A: Excessive heat from dull tools or slow feeds destroys the phase balance (austenite/ferrite ratio) that gives 2507 its corrosion resistance. Sharp inserts, aggressive feed, controlled DOC, and proper coolant are essential.
+Q: Can you preserve 2507's corrosion resistance through machining?
+A: Yes — that's the point. Controlled cutting temperature keeps the austenite/ferrite phase balance intact. Ask how we're going to do it and we'll walk you through the setup.
 
-Q: What tolerances do you hold on 2507?
-A: ±0.0005" is routine on critical dimensions. Every critical feature gets first-article CMM verification.
+Q: What tolerances are achievable on 2507?
+A: ±0.0005" routine on critical features. Bore roundness and concentricity held tighter than most job-shop lathes can offer.
 
-Q: Do you offer PMI verification on 2507 finished parts?
-A: Yes — Positive Material Identification available on request to verify PREN and confirm no cross-contamination during machining.
+Q: Do you machine other duplex grades?
+A: Yes — Duplex 2205 (S32205), Zeron 100 (S32760), and hyper-duplex on request.
 
 ---
 
@@ -236,6 +224,36 @@ A: 1018 for weld-fabricated assemblies and parts that don't need hardening. 1045
 
 Q: Do you keep carbon steel in stock?
 A: Some sizes yes, others sourced per job. Cheaper and more available than alloy steel — usually a 3–5 day material lead time when we don't have it.
+
+---
+
+## /service-specs/
+
+Source: https://bandrproduction.com/service-specs/
+
+Q: What is the tightest tolerance B&R can hold?
+A: Plus or minus 0.0002 inches is achievable with careful setup on critical dimensions. Plus or minus 0.0005 inches is routine production tolerance across turning and milling. Deep-hole drilling holds under 0.001 inch straightness per foot on UNISIG-class work. If your print calls for tighter than plus or minus 0.0002 inches we will say so at quote, not after the first article fails.
+
+Q: What surface finishes does B&R routinely produce?
+A: Turning: 16-32 Ra typical, 8 Ra achievable with the right insert and pass strategy. Milling: 32-64 Ra typical, 16 Ra achievable. Grinding and lapping are available via trusted partner shops when sub-8 Ra is required.
+
+Q: What is the largest part B&R can machine?
+A: Turning envelope maxes out at 25 inch swing by 80 inch between centers on the Samsung SL-65A. Milling: 40 by 20 by 20 inches on the Fadal VMC 4020. Deep-hole drilling up to 60 inch length on UNISIG. For anything larger, we coordinate with trusted partner shops.
+
+Q: What alloys do you stock vs source on demand?
+A: Stocked: 4140/4340 alloy steel, 304/316/17-4 PH stainless, 6061/7075 aluminum, 1018/1045 carbon steel, common Inconel 625/718 sizes. Source on demand: Super Duplex 2507, Monel K-500, Nitronic 50, Hastelloy, titanium, exotic specialty alloys. Stocked alloys mean same-day rig-down start; sourced alloys add 1-3 days lead time.
+
+Q: What quality documentation do you provide?
+A: Standard: full heat/lot traceability, MTR (material test report) for every heat, first-article inspection report on new programs. Available on request: CMM dimensional reports, hardness verification, PMI (positive material identification) spot-checks, NDT via partner labs, customer-specific ITPs. We're not AS9100 / Nadcap registered — if your program requires registered docs, we're not the right shop.
+
+Q: What tolerances does deep-hole drilling hold?
+A: On UNISIG gundrilling and BTA drilling: hole diameter plus or minus 0.001 inches routine, straightness better than 0.001 inches per foot, surface finish 32-64 Ra off-tool. Depth-to-diameter ratios up to 100:1 are production-capable; deeper holes quoted per-job.
+
+Q: Is there a turnaround time for standard parts?
+A: Simple 1-off prototypes in stocked alloy: 1-5 business days. Small production runs: 1-3 weeks depending on alloy and quality documentation requirements. Rush and rig-down work gets slotted into the schedule same-day if material is on the shelf.
+
+Q: Do you handle secondary operations?
+A: In-house: deburring, surface prep, tapping, threading, EDM via partner. Through our network: heat treat, black oxide, zinc / nickel / cadmium plating, hard chrome, anodizing, passivation, laser marking, serialization. We quote the full lot delivered, not just the chips.
 
 ---
 
@@ -461,6 +479,66 @@ A: 1–3 weeks is typical for prototype or low-volume small-diameter work on our
 
 ---
 
+## /about-us/
+
+Source: https://bandrproduction.com/about-us/
+
+Q: Who owns B&R Productions?
+A: B&R Productions is a family-run precision CNC machine shop founded in 1994 in New Waverly, Texas. We've been family-owned and operator-run from day one, which is why you can get a straight answer from the shop floor the same day you call.
+
+Q: How long has B&R Productions been in business?
+A: Since 1994 — 30+ years of continuous precision CNC machining in New Waverly, Texas. We've grown from one Kingston lathe to 25+ CNC machines under one roof, but it's the same family running the same shop.
+
+Q: What industries does B&R Productions serve?
+A: Oil & gas (frac pumps, wellheads, downhole tools, subsea), aerospace (structural components, ground support equipment), military & defense (weapon systems, armored vehicle parts), and industrial manufacturing. Texas-primary with LTL/freight shipping nationwide for larger programs.
+
+Q: Is B&R Productions ISO 9001 or AS9100 certified?
+A: No. B&R is not ISO 9001, AS9100, Nadcap, or ITAR-registered. If your program requires a registered QMS, you need a registered shop — we'd rather say so before you quote than waste your time. For everything else, we provide full heat/lot traceability, MTRs, first-article inspection, and customer-specific ITPs on every job.
+
+Q: What makes B&R different from other Texas machine shops?
+A: Three things: real exotic-alloy fluency (Inconel, Super Duplex, 17-4 PH are weekly work, not once-a-quarter experiments), straight-talk lead times (we tell you at quote, not the day before), and emergency-capable turnaround (same-day to next-day rig-down work on stocked alloys for existing customers).
+
+Q: Where is B&R Productions located?
+A: 5909 Farm to Market Road 1374, New Waverly, TX 77358 — Montgomery County, about an hour north of Houston. Local pickup available from Conroe, Huntsville, The Woodlands, Willis, Spring, and Tomball.
+
+Q: What CNC machines does B&R Productions run?
+A: 25+ CNC machines including Fadal VMC 4020, Hwacheon Hi-Tech 400 / Hi-Eco 21 / Hi-Eco 35 / Mega 95 / Mega 100 lathes, Samsung SL-45A and SL-65A turning centers, UNISIG deep-hole gundrilling, and YCM TV-188B vertical turning. Full whitepapers on every machine at /whitepapers/.
+
+Q: Does B&R Productions handle one-off and prototype work?
+A: Yes. We machine prototypes, first articles, low-volume production, and high-volume production equally — no minimum order quantities. Prototype runs typically turn in 1-5 days depending on complexity and material availability.
+
+---
+
+## /about-us/get-a-quote/
+
+Source: https://bandrproduction.com/about-us/get-a-quote/
+
+Q: How fast will B&R respond to my quote request?
+A: Standard work: within one business day. Rig-down emergencies on stocked alloys for existing customers: same-day quote, usually within a couple of hours. Quotes submitted before noon Central typically come back the same afternoon.
+
+Q: What should I include when I request a quote?
+A: Print or 3D model (PDF, STEP, IGES, DWG, DXF — whatever you have), material specification, quantity, required quality documentation (MTRs, first-article, CMM reports, customer-specific ITPs), and your target delivery date. The more complete the package, the tighter the quote.
+
+Q: Do you charge for quotes?
+A: No. Quoting is free, whether it's one part or a hundred-piece program. If you need DFM feedback on a tough geometry or alloy choice before releasing drawings, we'll do that free too.
+
+Q: What file formats do you accept?
+A: PDFs (strongly preferred for 2D drawings), STEP and IGES for 3D models, DWG and DXF for native CAD. If you only have a sketch or a sample part, call (936) 291-7827 — we can start from a picture or a physical sample for simpler work.
+
+Q: Can you quote without a drawing?
+A: Yes, for simpler geometries we can quote from a sketch, a photo, or a physical sample. For anything with critical tolerances or GD&T callouts, we need an actual print to quote accurately.
+
+Q: What's the minimum order quantity?
+A: There is none. We machine single prototypes as readily as hundred-piece production runs. Setup cost is baked into unit price at quote — small runs see higher per-piece cost but there's no minimum.
+
+Q: Is my quote request confidential?
+A: Yes. Everything you send — prints, specs, pricing, program details — stays confidential. We routinely work under NDAs for defense and proprietary oil & gas programs. Ask and we'll sign yours before you send drawings.
+
+Q: How do I send ITAR or export-controlled work?
+A: B&R is not ITAR-registered — if your program requires an ITAR-registered shop, you need to work with a registered shop. For non-ITAR defense and dual-use work, we handle it like any other job with full documentation.
+
+---
+
 ## /whitepapers/hwacheon-hi-tech-400-defense/
 
 Source: https://bandrproduction.com/whitepapers/hwacheon-hi-tech-400-defense/
@@ -611,6 +689,48 @@ A: ±0.0005" routine on critical features. Tighter with the right fixture. Every
 
 ---
 
+## /whitepapers/hwacheon-hi-eco-21/
+
+Source: https://bandrproduction.com/whitepapers/hwacheon-hi-eco-21/
+
+Q: What does B&R Productions use the Hwacheon Hi-Eco 21 HS for?
+A: Bearkat Blur is the shop's answer to a specific economic problem: some oilfield and aerospace parts are small, wanted in quantity, and cannot carry the setup time of a larger lathe. 8" OD × 12" L, a 2" through-spindle bar capacity, 4,000 RPM, and a 12-station turret with 1,181 IPM rapids on both axes — every one of those numbers is about cycle time. When the quote is won or lost on price per piece at quantity 200, this is the machine that wins it.
+
+Q: When is the Bearkat Blur the right machine for my part?
+A: Pick this machine when: The part is under 8" in diameter and 12" long — bushings, couplings, valve inserts, precision shafts, seat rings.; Quantity is high enough that seconds per piece show up in the price.; Bar-fed work up to 2" through the spindle.; The part is small but the tolerance isn't loose — this machine holds ±0.0005" while cycling fast..
+
+Q: When is the Bearkat Blur the wrong machine?
+A: Anything that doesn't fit. The envelope is a hard wall, and the honest answer on a 9-inch part is that it goes to a Hi-Eco 35 cell instead. Heavy interrupted roughing on forged stock is also wrong here — 15 HP continuous is sized for finish-critical small work, not for taking scale off a forging. That's the Hammer of Forge's job.
+
+Q: What industries does B&R machine on the Hwacheon Hi-Eco 21 HS?
+A: Oil & gas (frac pump parts, wellhead components, downhole tool bodies), aerospace (structural components, ground support equipment), military & defense (weapon system components, armored vehicle parts), and industrial manufacturers across Texas and the Gulf Coast. Every industry has a dedicated whitepaper linked above.
+
+Q: How do I get a quote for work on the Hwacheon Hi-Eco 21 HS?
+A: Send your print, material spec, quantity, and target delivery to sales@bandrproduction.com, or call (936) 291-7827. We respond within one business day for standard work, same-day for rig-down emergencies on stocked alloys.
+
+---
+
+## /whitepapers/ycm-tv-188b/
+
+Source: https://bandrproduction.com/whitepapers/ycm-tv-188b/
+
+Q: What does B&R Productions use the YCM TV-188 B for?
+A: Loco Motive exists for the part that just got quoted somewhere else and came back "exceeds our envelope." 32" × 70" × 32", a 78.7" table, and 4,409 lb of workpiece capacity on a patented T-base — this is a heavier class of vertical machining center than the 20-inch machines most job shops stop at. The BT50 spindle and 25 HP matter as much as the travels: taking a real roughing cut in Inconel on a large block is a rigidity problem before it is a horsepower problem, and mass is what solves it.
+
+Q: When is the Loco Motive the right machine for my part?
+A: Pick this machine when: The part is prismatic and too big for a 20-inch-class mill — large valve bodies, wellhead spool adapters, manifold blocks.; The workpiece is heavy enough that table capacity, not travel, is the binding constraint.; You're hogging a large amount of material out of a solid block and chatter has been the problem elsewhere.; The part needs multi-face work at size, where re-fixturing on a smaller machine would cost you the tolerance..
+
+Q: When is the Loco Motive the wrong machine?
+A: Small parts. Putting a 6-inch bracket on this table wastes the machine and costs you money — Pistol Whiskers will do it faster and cheaper. It is also not a high-RPM machine: 6,000 RPM standard is plenty for steel and superalloy at this size, but small-diameter aluminum work that wants 12,000+ RPM is not what this platform is for.
+
+Q: What industries does B&R machine on the YCM TV-188 B?
+A: Oil & gas (frac pump parts, wellhead components, downhole tool bodies), aerospace (structural components, ground support equipment), military & defense (weapon system components, armored vehicle parts), and industrial manufacturers across Texas and the Gulf Coast. Every industry has a dedicated whitepaper linked above.
+
+Q: How do I get a quote for work on the YCM TV-188 B?
+A: Send your print, material spec, quantity, and target delivery to sales@bandrproduction.com, or call (936) 291-7827. We respond within one business day for standard work, same-day for rig-down emergencies on stocked alloys.
+
+---
+
 ## /whitepapers/hwacheon-hi-eco-35-defense/
 
 Source: https://bandrproduction.com/whitepapers/hwacheon-hi-eco-35-defense/
@@ -641,6 +761,27 @@ A: ±0.0005" routine on critical features. Tighter with the right fixture. Every
 
 ---
 
+## /whitepapers/fadal-vmc-4020/
+
+Source: https://bandrproduction.com/whitepapers/fadal-vmc-4020/
+
+Q: What does B&R Productions use the Fadal VMC 4020-906-1 for?
+A: Pistol Whiskers is the machine that makes a job economical before anyone has decided the job is worth doing. A 20" × 48" × 24" envelope with a CAT-40 spindle and a 21-tool changer is not exotic, and that is exactly the point: it is fast to set up, cheap to run, and forgiving enough that a one-off repair part or a three-piece prototype doesn't have to justify tying up a larger machine. Most parts that come through this shop as "can you just make one of these" start here.
+
+Q: When is the Pistol Whiskers the right machine for my part?
+A: Pick this machine when: The part fits inside 20" × 48" × 24" and is prismatic — brackets, plates, manifold blocks, housings, adapters.; You need one, or five, and the setup cost matters more than the cycle time.; It's a repair or reverse-engineered part and the geometry is still being confirmed against a worn sample.; The job needs multi-face work with a tool list that fits comfortably inside 21 pockets..
+
+Q: When is the Pistol Whiskers the wrong machine?
+A: Anything round that wants to be turned — that belongs on a lathe, and we have seven. Parts over 20" in width go to Loco Motive, which has more than twice the envelope and a heavier column to match. High-volume small parts are usually wrong here too: the ATC and the CAT-40 spindle are general-purpose, and a job running hundreds of pieces will cost you more in cycle time than it saves in setup.
+
+Q: What industries does B&R machine on the Fadal VMC 4020?
+A: Oil & gas (frac pump parts, wellhead components, downhole tool bodies), aerospace (structural components, ground support equipment), military & defense (weapon system components, armored vehicle parts), and industrial manufacturers across Texas and the Gulf Coast. Every industry has a dedicated whitepaper linked above.
+
+Q: How do I get a quote for work on the Fadal VMC 4020?
+A: Send your print, material spec, quantity, and target delivery to sales@bandrproduction.com, or call (936) 291-7827. We respond within one business day for standard work, same-day for rig-down emergencies on stocked alloys.
+
+---
+
 ## /whitepapers/ycm-tv-188b-defense/
 
 Source: https://bandrproduction.com/whitepapers/ycm-tv-188b-defense/
@@ -668,6 +809,27 @@ A: Yes — reverse-engineering from a worn sample is core job-shop work and it's
 
 Q: What tolerances do you hold on defense components?
 A: ±0.0005" routine on critical features. Tighter with the right fixture. Every critical dimension CMM-verified. Documentation to customer spec.
+
+---
+
+## /whitepapers/unisig-deep-hole-drilling/
+
+Source: https://bandrproduction.com/whitepapers/unisig-deep-hole-drilling/
+
+Q: What does B&R Productions use the UNISIG Deep-Hole Drilling Machine for?
+A: Deep Hole does the one thing that is nearly impossible to fake: long, straight, on-size holes at high length-to-diameter ratios. Gundrilling and BTA drilling are separate disciplines from turning and milling, with their own tooling, their own coolant pressure requirements, and their own failure mode — drift. A hole that wanders half a degree over 30 inches is scrap, and you usually don't find out until it's finished. Shops without dedicated deep-hole equipment either subcontract this work or attempt it with a twist drill and hope.
+
+Q: When is the Deep Hole the right machine for my part?
+A: Pick this machine when: The bore's length-to-diameter ratio is beyond what a conventional drill can hold straight.; Straightness and positional accuracy of the bore are specified, not assumed.; Downhole tool bodies, long hydraulic cylinders, manifolds with deep internal passages, gun-drilled shafting.; Surface finish inside the bore matters — sealing bores, hydraulic bores, bores that will be honed afterwards..
+
+Q: When is the Deep Hole the wrong machine?
+A: Short holes. A 3:1 hole is a drilling operation on whatever machine is already holding the part, and routing it here adds a setup for no benefit. Blind pockets and non-round internal features aren't deep-hole work either, whatever their depth.
+
+Q: What industries does B&R machine on the UNISIG deep-hole drilling?
+A: Oil & gas (frac pump parts, wellhead components, downhole tool bodies), aerospace (structural components, ground support equipment), military & defense (weapon system components, armored vehicle parts), and industrial manufacturers across Texas and the Gulf Coast. Every industry has a dedicated whitepaper linked above.
+
+Q: How do I get a quote for work on the UNISIG deep-hole drilling?
+A: Send your print, material spec, quantity, and target delivery to sales@bandrproduction.com, or call (936) 291-7827. We respond within one business day for standard work, same-day for rig-down emergencies on stocked alloys.
 
 ---
 
@@ -911,6 +1073,27 @@ A: Yes — routine work. Send a worn sample and any print or spec you have. We p
 
 ---
 
+## /whitepapers/samsung-sl-45a/
+
+Source: https://bandrproduction.com/whitepapers/samsung-sl-45a/
+
+Q: What does B&R Productions use the Samsung SL-45A/2200 for?
+A: Hammer of Forge is the machine that takes ugly starting material and makes it round, straight, and to size. Forged blanks still carrying scale and skin, rough saw-cut billets, oversized bar — 14" OD × 96" L, a 6.5" bar capacity, and a 3-speed gearbox that puts real torque at the bottom end. Most of what the other lathes in this shop finish, this one starts. Roughing forged stock is a rigidity and torque problem, and it is genuinely hard on a machine that wasn't built for it.
+
+Q: When is the Hammer of Forge the right machine for my part?
+A: Pick this machine when: The starting material is a forging or casting with scale, skin, or an interrupted first cut.; You need heavy stock removal before a finish operation, and you'd rather not spend a precision machine's life doing it.; Long rough shafts, drive mandrels, and structural stock up to 96".; Bar work up to 6.5" through the spindle..
+
+Q: When is the Hammer of Forge the wrong machine?
+A: Finish-critical work as a one-hit. This machine's job is to get material off predictably, and the honest sequence on a tight-tolerance part is rough here, finish elsewhere. Small precision parts are a poor fit for the same reason. If the part starts as clean bar and finishes to ±0.0005" in one operation, a Hi-Eco cell is the better machine.
+
+Q: What industries does B&R machine on the Samsung SL-45A?
+A: Oil & gas (frac pump parts, wellhead components, downhole tool bodies), aerospace (structural components, ground support equipment), military & defense (weapon system components, armored vehicle parts), and industrial manufacturers across Texas and the Gulf Coast. Every industry has a dedicated whitepaper linked above.
+
+Q: How do I get a quote for work on the Samsung SL-45A?
+A: Send your print, material spec, quantity, and target delivery to sales@bandrproduction.com, or call (936) 291-7827. We respond within one business day for standard work, same-day for rig-down emergencies on stocked alloys.
+
+---
+
 ## /whitepapers/hwacheon-mega-100-industrial/
 
 Source: https://bandrproduction.com/whitepapers/hwacheon-mega-100-industrial/
@@ -938,6 +1121,27 @@ A: Yes for repeat customers with material on the shelf. Same-day and next-day re
 
 Q: Can you do small-batch production or is B&R just one-offs?
 A: Both. Prototype and small-batch through repeat production. Small production runs where a big shop's minimum order would kill the economics are exactly where we fit.
+
+---
+
+## /whitepapers/hwacheon-hi-eco-35/
+
+Source: https://bandrproduction.com/whitepapers/hwacheon-hi-eco-35/
+
+Q: What does B&R Productions use the Hwacheon Hi-Eco 35 (two cells) for?
+A: Ironwood Revival and Quickdraw Slim are two identical Hi-Eco 35 cells, and the fact that there are two of them is the entire point. 12.5" OD × 42" L each, 12" 3-jaw hydraulic chucks, 10-station turrets, Fanuc OT-C controls. Identical cells mean a proven program runs on either one, so a job can be split for throughput or moved when the other cell is tied up — without re-proving the setup. For mid-size production work with a delivery date attached, redundancy is worth more than peak capability.
+
+Q: When is the Ironwood Revival / Quickdraw Slim the right machine for my part?
+A: Pick this machine when: Mid-size turned parts — shafts, gear blanks, flanges, threaded components, tool bodies in the 12-inch class.; The quantity is enough that running two cells in parallel actually compresses delivery.; You're a repeat customer with a proven program and you care about schedule risk more than the last 5% of cycle time.; Clean turned finishes matter — this platform holds surface finish well through a production run..
+
+Q: When is the Ironwood Revival / Quickdraw Slim the wrong machine?
+A: Long work. 42" between the extremes is generous for mid-size parts and useless for a 70-inch shaft, which belongs on Rattle & Hum or Big Thicket Express. Live-tooled one-setup work is also out of scope — if the part needs cross-drilling or milled flats without a second operation, that's Torque & Tumble.
+
+Q: What industries does B&R machine on the Hwacheon Hi-Eco 35?
+A: Oil & gas (frac pump parts, wellhead components, downhole tool bodies), aerospace (structural components, ground support equipment), military & defense (weapon system components, armored vehicle parts), and industrial manufacturers across Texas and the Gulf Coast. Every industry has a dedicated whitepaper linked above.
+
+Q: How do I get a quote for work on the Hwacheon Hi-Eco 35?
+A: Send your print, material spec, quantity, and target delivery to sales@bandrproduction.com, or call (936) 291-7827. We respond within one business day for standard work, same-day for rig-down emergencies on stocked alloys.
 
 ---
 
@@ -1118,6 +1322,27 @@ A: Titanium Grade 5 (Ti-6Al-4V), Grade 23 ELI, Inconel 718 and 625, Waspaloy, A2
 
 Q: Can you respond to AOG (aircraft-on-ground) work?
 A: Yes, when material is available. Emergency response supported for existing aerospace customers. Newer customers should call to discuss what's realistic for their specific alloy and part.
+
+---
+
+## /whitepapers/hwacheon-hi-tech-400/
+
+Source: https://bandrproduction.com/whitepapers/hwacheon-hi-tech-400/
+
+Q: What does B&R Productions use the Hwacheon Hi-Tech 400 for?
+A: Torque & Tumble is the machine that removes a setup. Live tooling on a heavy-duty box-way turning center means a part can be turned, milled, cross-drilled, and threaded in one chucking — 12.5" OD × 49" L, 12-station turret, Fanuc 18iTB. Every time a part comes out of the chuck and goes into another machine, you pay for it twice: once in handling and once in the concentricity you lose re-locating it. On parts with milled features referenced to a turned diameter, one setup is not a convenience, it's the tolerance strategy.
+
+Q: When is the Torque & Tumble the right machine for my part?
+A: Pick this machine when: The part is turned but has cross-holes, flats, slots, or milled features that must hold position to a turned datum.; You've been running the part as two operations across two machines and the concentricity is marginal.; Box-way rigidity matters — heavy interrupted cuts in duplex or Inconel at mid-size.; Threaded tool bodies and subs where the thread and the milled feature share a reference..
+
+Q: When is the Torque & Tumble the wrong machine?
+A: Pure turning at high RPM. The heavy-duty configuration tops out at 1,800 RPM, which is deliberate — this platform trades spindle speed for rigidity. Small high-volume turned parts cycle faster on Bearkat Blur. And if the part has no milled features at all, you're paying for live tooling you won't use.
+
+Q: What industries does B&R machine on the Hwacheon Hi-Tech 400?
+A: Oil & gas (frac pump parts, wellhead components, downhole tool bodies), aerospace (structural components, ground support equipment), military & defense (weapon system components, armored vehicle parts), and industrial manufacturers across Texas and the Gulf Coast. Every industry has a dedicated whitepaper linked above.
+
+Q: How do I get a quote for work on the Hwacheon Hi-Tech 400?
+A: Send your print, material spec, quantity, and target delivery to sales@bandrproduction.com, or call (936) 291-7827. We respond within one business day for standard work, same-day for rig-down emergencies on stocked alloys.
 
 ---
 
@@ -1331,6 +1556,27 @@ A: ±0.0005" routine on critical features. Tighter with the right fixture. Every
 
 ---
 
+## /whitepapers/hwacheon-mega-100/
+
+Source: https://bandrproduction.com/whitepapers/hwacheon-mega-100/
+
+Q: What does B&R Productions use the Hwacheon Mega 100 for?
+A: The 10-inch through-hole is where Texaco Thunder earns its keep, and it is the single most differentiating number in this shop. 16" OD × 100" L with a 10" bore through the spindle means long tubing stock, downhole tool bodies with internal passages, coiled-tubing tool bodies, and large valve stems needing bore access from both ends can be fed through and worked — instead of being cut, chucked short, flipped, and re-indicated. Most shops outsource this class of work because their spindle bore stops them at 3 or 4 inches. This machine turns outsourced work into in-house work.
+
+Q: When is the Texaco Thunder the right machine for my part?
+A: Pick this machine when: The stock is tubular and long, and you need to work it without cutting it down first.; Bore access from both ends matters — internal passages, through-bored tool bodies, long valve stems.; Collars, subs, and couplings in the 16-inch class, in oilfield alloys.; Another shop has already told you the part exceeds their spindle bore..
+
+Q: When is the Texaco Thunder the wrong machine?
+A: Fast, small, or fussy work. Two-range spindle speeds of 400 and 750 RPM tell you what this machine is: a heavy, deliberate flatbed lathe built for large slow cuts. Small parts are wasted on it, and finish-critical small-diameter work belongs on Bearkat Blur. A 4 or 8-station heavy-duty turret also means fewer tools in the cut than a 12-station machine — complex multi-tool parts are better placed elsewhere.
+
+Q: What industries does B&R machine on the Hwacheon Mega 100?
+A: Oil & gas (frac pump parts, wellhead components, downhole tool bodies), aerospace (structural components, ground support equipment), military & defense (weapon system components, armored vehicle parts), and industrial manufacturers across Texas and the Gulf Coast. Every industry has a dedicated whitepaper linked above.
+
+Q: How do I get a quote for work on the Hwacheon Mega 100?
+A: Send your print, material spec, quantity, and target delivery to sales@bandrproduction.com, or call (936) 291-7827. We respond within one business day for standard work, same-day for rig-down emergencies on stocked alloys.
+
+---
+
 ## /whitepapers/hwacheon-mega-95-aerospace/
 
 Source: https://bandrproduction.com/whitepapers/hwacheon-mega-95-aerospace/
@@ -1418,6 +1664,27 @@ A: Controlled cutting temperature — moderate SFM, aggressive feed with sharp c
 
 Q: Can you reverse-engineer discontinued OEM oilfield parts?
 A: Yes — routine work. Send a worn sample and any print or spec you have. We produce the replacement with material traceability the OEM often won't share when you're outside their warranty window.
+
+---
+
+## /whitepapers/hwacheon-mega-95/
+
+Source: https://bandrproduction.com/whitepapers/hwacheon-mega-95/
+
+Q: What does B&R Productions use the Hwacheon Mega 95 for?
+A: Rattle & Hum is the length machine: 16" OD × 120" L on a gap bed, with a spindle range that drops to 40 RPM. Ten feet of turning capacity is not a marginal upgrade over a 42-inch lathe — it is a different category of part. Extended shafts, rollers, rods, long structural rounds, and multi-diameter shafting that would otherwise have to be made in sections and joined all become single-piece parts here, which removes a joint, a tolerance stack, and a failure mode.
+
+Q: When is the Rattle & Hum the right machine for my part?
+A: Pick this machine when: The part is long — shafts, rollers, rods, screw stock, long structural rounds up to 120".; You've been quoting the part in sections because nobody local can turn it in one piece.; Low-RPM heavy cutting on large-diameter stock, where 40 RPM at the bottom of the range is a working speed and not a formality.; The gap bed's extra swing is needed for a flanged or stepped feature near one end..
+
+Q: When is the Rattle & Hum the wrong machine?
+A: Anything needing a big bore through the spindle — that's Texaco Thunder's 10-inch through-hole, and it's the reason both machines exist. Short parts don't belong here either; they'll run faster and cheaper on a Hi-Eco 35 cell. And 16" OD is a real ceiling — parts above it go to Big Thicket Express at 22".
+
+Q: What industries does B&R machine on the Hwacheon Mega 95?
+A: Oil & gas (frac pump parts, wellhead components, downhole tool bodies), aerospace (structural components, ground support equipment), military & defense (weapon system components, armored vehicle parts), and industrial manufacturers across Texas and the Gulf Coast. Every industry has a dedicated whitepaper linked above.
+
+Q: How do I get a quote for work on the Hwacheon Mega 95?
+A: Send your print, material spec, quantity, and target delivery to sales@bandrproduction.com, or call (936) 291-7827. We respond within one business day for standard work, same-day for rig-down emergencies on stocked alloys.
 
 ---
 
@@ -1598,6 +1865,27 @@ A: Yes for repeat customers with material on the shelf. Same-day and next-day re
 
 Q: Can you do small-batch production or is B&R just one-offs?
 A: Both. Prototype and small-batch through repeat production. Small production runs where a big shop's minimum order would kill the economics are exactly where we fit.
+
+---
+
+## /whitepapers/samsung-sl-65a/
+
+Source: https://bandrproduction.com/whitepapers/samsung-sl-65a/
+
+Q: What does B&R Productions use the Samsung SL-65A/3200 for?
+A: Big Thicket Express is the largest turning envelope in the shop — 22" OD × 119" L with steady-rest support — and the steady rest is doing as much work as the swing. Length without support is a chatter problem, not a capacity one. Being able to hold a long heavy part in the middle while turning it is what makes a 22-inch diameter at ten feet a real working spec rather than a number on a page. When a part is both big and long, this is the only machine here that takes it.
+
+Q: When is the Big Thicket Express the right machine for my part?
+A: Pick this machine when: The part is over 16" in diameter — past the Mega lathes' ceiling.; It is long AND heavy, and needs intermediate support to be turned without chatter.; Large forgings, bar stock, and tubing in oilfield and structural alloys.; You've been told a part is too big by shops that stopped at 16 or 18 inches..
+
+Q: When is the Big Thicket Express the wrong machine?
+A: Small or medium work of any kind — the setup overhead on a machine this size is real, and a mid-size part will be quicker and cheaper on a Hi-Eco 35 cell. It also has no 10-inch through-hole; long tubular parts needing feed-through belong on Texaco Thunder even when the diameter would fit here.
+
+Q: What industries does B&R machine on the Samsung SL-65A?
+A: Oil & gas (frac pump parts, wellhead components, downhole tool bodies), aerospace (structural components, ground support equipment), military & defense (weapon system components, armored vehicle parts), and industrial manufacturers across Texas and the Gulf Coast. Every industry has a dedicated whitepaper linked above.
+
+Q: How do I get a quote for work on the Samsung SL-65A?
+A: Send your print, material spec, quantity, and target delivery to sales@bandrproduction.com, or call (936) 291-7827. We respond within one business day for standard work, same-day for rig-down emergencies on stocked alloys.
 
 ---
 
@@ -2379,18 +2667,6 @@ A: Yes — this is one of our specialties. Controlled cutting temperature via co
 Q: What size/length can you handle on subsea connector bodies?
 A: Long and large-diameter turned parts are within our envelope. Send dimensions with the RFQ and we'll confirm.
 
-Q: Do you machine to API 6A?
-A: Yes — routinely. See /services/api-6a-machining/ for the full breakdown.
-
-Q: Can you machine a full wellhead body from a forging?
-A: Yes, from customer-supplied or B&R-sourced forgings.
-
-Q: Do you provide certifications and inspection reports?
-A: Yes — material heat/lot, first-article layout, and CMM data on every job.
-
-Q: What lead times should we expect?
-A: Depends on the part and material on hand. Emergency work is prioritized. Call (936) 291-7827 for a straight answer.
-
 Q: What Inconel 718 condition can you machine?
 A: All of them. Aged (H900 through H1150), solution-annealed, and customer-supplied heat-treat conditions. We ask which condition you need before we quote.
 
@@ -2442,53 +2718,17 @@ A: Tell us in the quote so we can leave the right stock for finish operations po
 Q: Do you offer welding, plating, or heat treatment in-house?
 A: We machine. Heat treat, plating, and coating are through trusted local partners we coordinate with directly. That's usually the right architecture — specialists doing what they specialize in — but we take responsibility for the finished part.
 
-Q: What CNC machining services do you offer?
-A: CNC turning (7 lathes), CNC milling (Fadal + YCM VMCs), UNISIG-class deep-hole drilling, and manual machining. Full-service from prototype through production.
+Q: Do you machine to API 6A?
+A: Yes — routinely. See /services/api-6a-machining/ for the full breakdown.
 
-Q: What alloys do you machine regularly?
-A: Inconel 718 and 625, Super Duplex 2507, 17-4 PH (all conditions), 4140/4340, Monel K-500, Titanium Ti-6Al-4V, Nitronic 50/60, 6061 and 7075 aluminum, 304/316 stainless, and tool steels.
+Q: Can you machine a full wellhead body from a forging?
+A: Yes, from customer-supplied or B&R-sourced forgings.
 
-Q: What tolerances do you hold?
-A: ±0.0005" routine on critical dimensions. Tighter with careful setup and fresh tooling. Every critical feature gets first-article CMM verification and in-process gauging.
+Q: Do you provide certifications and inspection reports?
+A: Yes — material heat/lot, first-article layout, and CMM data on every job.
 
-Q: What industries do you primarily serve?
-A: Oil & gas is our core industry — frac pump, wellhead (API 6A), downhole, and wireline. We also serve aerospace, military & defense, and general industrial customers.
-
-Q: Where are you located and what areas do you serve?
-A: 5909 Farm to Market Road 1374, New Waverly, TX 77358 — East Texas, between Huntsville and Conroe, 60 miles north of Houston. We serve customers across Texas and the Gulf Coast, ship nationwide.
-
-Q: Can you handle emergency rig-down machining?
-A: Yes — same-day to next-day for existing customers on stocked alloys. New-customer emergency work depends on alloy availability.
-
-Q: How do I request a quote?
-A: Send print, material spec, quantity, and quality requirements to the quote form (or sales@bandrproduction.com). Standard response within one business day; same-day for rig-down.
-
-Q: What quality documentation do you provide?
-A: Full material traceability by heat and lot, Mill Test Reports (MTRs), certificates of conformance, first-article inspection reports with CMM data, and customer-specific ITPs on request.
-
-Q: Do you machine Inconel and Super Duplex weekly?
-A: Yes. These are weekly work — we keep coated-carbide inserts, high-pressure through-tool coolant, and disciplined feeds/speeds dialed in for both.
-
-Q: What's your typical lead time?
-A: 1–3 days for stocked-material prototypes (existing customer). 1–3 weeks for small production. 3–5 weeks for production runs. Longer if material sources from mill.
-
-Q: Do you offer reverse-engineering of discontinued parts?
-A: Yes — routine sustainment work. Send a worn sample; we CMM-measure, PMI-verify alloy, and produce replacements with full traceability.
-
-Q: Do you have DFARS-compliant material sourcing?
-A: No. We don't operate a DFARS specialty-metals compliance program and can't certify sourcing against it. MTRs and heat/lot traceability come standard on every job, and we'll happily run customer-supplied DFARS-compliant material. If your contract flows DFARS down, tell us at RFQ and we'll be straight about what we can and can't cover.
-
-Q: Are you API-monogrammed?
-A: Contact us for current certification status and to discuss customer-specific quality plans. We machine to API 6A tolerances and specifications routinely with full traceability.
-
-Q: What CNC machines do you run?
-A: 7 CNC lathes (Hwacheon Hi-Eco 21/35, Hi-Tech 400, Mega 95/100; Samsung SL-45A/SL-65A), 2 CNC VMCs (Fadal VMC 4020, YCM TV-188 B), UNISIG-class deep-hole drilling, plus manual Kingston lathes and Bridgeport mills.
-
-Q: Do you take walk-in or field jobs?
-A: For local Montgomery County / Walker County / North Houston customers, yes — drop-off and pickup by prior arrangement. Emergency parts get worked into the schedule.
-
-Q: What payment terms do you offer?
-A: Net-30 for approved credit accounts. New customers may be asked to pay in advance or via credit card for the first order. Discussed at quote.
+Q: What lead times should we expect?
+A: Depends on the part and material on hand. Emergency work is prioritized. Call (936) 291-7827 for a straight answer.
 
 ---
 
@@ -3883,10 +4123,7 @@ A: Yes — routine when OEM prints are unavailable. Send us the sample, we measu
 Source: https://bandrproduction.com/services/wellhead-component-machining/
 
 Q: Do you machine to API 6A?
-A: Yes — routine work with full material traceability and first-article inspection. Yes — routinely. See /services/api-6a-machining/ for the full breakdown.
-
-Q: Can you handle emergency wellhead work?
-A: Yes — same-day to next-day for existing customers on stocked material.
+A: Yes — routinely. See /services/api-6a-machining/ for the full breakdown.
 
 Q: Can you machine a full wellhead body from a forging?
 A: Yes, from customer-supplied or B&R-sourced forgings.
@@ -3902,18 +4139,6 @@ A: Depends on the part and material on hand. Emergency work is prioritized. Call
 ## /services/frac-pump-machining/
 
 Source: https://bandrproduction.com/services/frac-pump-machining/
-
-Q: Do you machine complete fluid ends?
-A: Yes — including finish machining, cross-drilling, threading, and inspection to customer specifications.
-
-Q: What frac pump fluid end brands and platforms do you machine for?
-A: Frac pump fluid end work at B&R spans OEM platforms and aftermarket rebuilds — we've machined fluid ends and rebuild-kit parts for Gardner Denver / Continental Emsco, Weir SPM, National Oilwell Varco, Serva, and Halliburton pump lines. If your fluid end is discontinued or the OEM stopped supporting it, we reverse-engineer from a worn sample and produce replacement parts with full MTR and heat/lot traceability. Send a photo or a print (PDF / STEP / IGES / DWG) and we'll quote off it.
-
-Q: Do you machine frac pump fluid end blocks from raw forgings?
-A: Yes — we machine complete frac pump fluid end blocks from stress-relieved forgings in the alloy you specify. Common material selections we run for fluid end blocks: 4340 pre-hard for standard-service duty, 17-4 PH for higher-pressure applications, and Inconel-clad or full Inconel 718 for chloride- or H2S-critical service. First-article CMM inspection on every cross-drilled bore.
-
-Q: What's typical frac-season lead time?
-A: During peak frac season, standard lead times can extend. Emergency work prioritized. Order-ahead is the smart play.
 
 Q: How fast can you turn around emergency frac pump work?
 A: Same-week is realistic for most jobs; same-day and next-day when the material is on the shelf. Call (936) 291-7827 and we'll give you a straight answer.
@@ -3933,12 +4158,6 @@ A: Yes — from stress-relieved forgings, in the alloy you specify.
 
 Source: https://bandrproduction.com/services/wireline-tool-machining/
 
-Q: Do you reverse-engineer wireline tools?
-A: Yes — routine sustainment work for wireline service companies. Send a sample.
-
-Q: What's your wireline-tool turnaround?
-A: 1–2 weeks for stocked-material work; longer if the alloy needs to come from the mill.
-
 Q: Can you machine precision shear-pin features?
 A: Yes — shear grooves and pin bores machined to spec with CMM verification. This is a routine wireline-tool feature we handle daily.
 
@@ -3953,12 +4172,6 @@ A: ±0.0005" on critical features. Concentricity and internal bore roundness hel
 ## /services/inconel-machining-texas/
 
 Source: https://bandrproduction.com/services/inconel-machining-texas/
-
-Q: Do you machine both 718 and 625?
-A: Yes — weekly. 718 for high strength (aged), 625 for chloride/high-temperature service.
-
-Q: What tolerances on Inconel?
-A: ±0.0005" routine on critical dimensions. First-article CMM verification and in-process gauging.
 
 Q: Do you actually run Inconel weekly, or is it a specialty job?
 A: Weekly. It's a regular part of our work mix, not a one-off.
@@ -4005,12 +4218,6 @@ A: Yes. If your program already has qualified fixtures or gauging from a prior s
 
 Source: https://bandrproduction.com/services/downhole-tool-machining/
 
-Q: Do you reverse-engineer discontinued downhole tools?
-A: Yes — routine sustainment work. Send a worn sample; we CMM-measure, PMI-verify alloy, and produce replacements with full traceability.
-
-Q: Do you have UNISIG-class deep-hole drilling for long-bore tool bodies?
-A: Yes. Sub-thousandth-per-foot straightness on L/D 20 to 100+. Purpose-built machine for oilfield tool bodies and hydraulic cylinders.
-
 Q: Can you single-point API threads in exotic alloys?
 A: Yes — API, NPT, ACME, buttress, and custom pitches in Inconel, super duplex, and titanium.
 
@@ -4028,15 +4235,6 @@ A: We handle long turned parts other job shops turn away. Send dimensions and we
 ## /services/api-6a-machining/
 
 Source: https://bandrproduction.com/services/api-6a-machining/
-
-Q: Are you API-monogrammed?
-A: Contact us for current certification status. We machine to API 6A tolerances and specifications routinely, with full material traceability, first-article inspection, and documentation packages built to customer requirements. Discuss specific monogram requirements at quote time.
-
-Q: What materials do you machine for API 6A parts?
-A: Standard: 4130/4140/4340 pre-hard, 17-4 PH (all conditions), Inconel 718 and 625, Super Duplex 2507. All with full heat/lot traceability and MTRs.
-
-Q: What tolerances do you hold?
-A: ±0.0005" on critical dimensions is routine. First-article CMM verification and in-process gauging. Documented via first-article inspection reports.
 
 Q: Do you machine API 6A wellhead and completion components?
 A: Yes — bodies, bonnets, adapters, hangers, valve internals, and mating surfaces are routine.
@@ -4056,12 +4254,6 @@ A: ±0.0005" routine, tighter on request. Ring-groove and other sealing surfaces
 
 Source: https://bandrproduction.com/services/emergency-cnc-machining/
 
-Q: What counts as emergency turnaround?
-A: Same-day to next-day for existing customers on stocked material. New customers with stocked-alloy work: typically 2–5 days including verification. Rush pricing applies.
-
-Q: Is emergency work more expensive?
-A: Rush pricing reflects overtime, weekend work, and priority sequencing. Typically 20–50% premium depending on schedule impact. Discussed upfront.
-
 Q: How do I actually reach you for an emergency?
 A: Call (936) 291-7827 direct. Say "rig-down" or "emergency" and the phone gets to the shop floor. For after-hours emergencies, leave a voicemail — we route emergencies off-hours.
 
@@ -4079,12 +4271,6 @@ A: Yes — we know the other real shops in East Texas and Houston. If we can't h
 ## /services/subsea-machining/
 
 Source: https://bandrproduction.com/services/subsea-machining/
-
-Q: What alloys do you spec for subsea?
-A: Super Duplex 2507 for most chloride-service work — best cost/performance. Inconel 625 for high-temperature or extreme chloride. Monel K-500 for fasteners and specialty subsea hardware.
-
-Q: Do you provide PMI verification?
-A: Yes — Positive Material Identification available on finished parts.
 
 Q: Do you machine to subsea-vendor quality plans?
 A: We machine to them and document heat/lot on every job, with first-article layout and CMM verification. Send the plan with the RFQ — if part of it needs a registered QMS we don't hold, we'll say so rather than find out later.
@@ -4187,12 +4373,6 @@ A: That's the premise of MWD tool machining as we practice it. MWD tools survive
 ## /services/valve-component-machining/
 
 Source: https://bandrproduction.com/services/valve-component-machining/
-
-Q: Do you machine anti-galling valve stems?
-A: Yes — Nitronic 60 is the anti-galling standard for valve stems. We machine it weekly.
-
-Q: What's your valve-component turnaround?
-A: 1–3 weeks for prototype or small production; 3–5 weeks for larger production runs.
 
 Q: Can you machine complete valve bodies from forgings?
 A: Yes — we regularly machine valve bodies from customer-supplied or B&R-sourced forgings in F22, F91, 4130/4140, and 17-4 PH.
