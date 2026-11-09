@@ -2273,20 +2273,26 @@ async function caseStudyJson(request, env, ctx) {
     if (b && b.ok) bing = { clicks: b.clicks || 0, impressions: b.impressions || 0, rank_avg: b.rank_avg || null };
   } catch (e) { /* skip */ }
 
-  // --- AI bot crawl + AI referral counts from LEADS_KV telemetry (set by logTelemetry) ---
+  // --- AI bot crawl + AI referral counts from LEADS_KV telemetry ---
+  // Worker writes via logTelemetry():
+  //   tel:bot:<botid>:<YYYY-MM-DD>  → counter string (sum = daily crawls)
+  //   tel:bot:<botid>:last          → JSON pointer, SKIP in counts
+  //   tel:ref:<refid>:<YYYY-MM-DD>  → counter string
+  //   tel:ref:<refid>:last          → JSON pointer, SKIP
   let aiCrawls = 0, aiRefs = 0;
   const aiBotBreakdown = {};
   if (env.LEADS_KV) {
     try {
       let cursor = undefined;
       do {
-        const list = await env.LEADS_KV.list({ prefix: "aibot:", cursor, limit: 1000 });
+        const list = await env.LEADS_KV.list({ prefix: "tel:bot:", cursor, limit: 1000 });
         for (const k of list.keys) {
+          if (k.name.endsWith(":last")) continue;    // skip last-seen pointers
           const raw = await env.LEADS_KV.get(k.name);
           const n = parseInt(raw || "0", 10) || 0;
           if (!n) continue;
           aiCrawls += n;
-          // key shape: aibot:YYYY-MM-DD:<botid>
+          // key shape: tel:bot:<botid>:<YYYY-MM-DD>
           const parts = k.name.split(":");
           const bot = parts[2] || "unknown";
           aiBotBreakdown[bot] = (aiBotBreakdown[bot] || 0) + n;
@@ -2295,8 +2301,9 @@ async function caseStudyJson(request, env, ctx) {
       } while (cursor);
       cursor = undefined;
       do {
-        const list = await env.LEADS_KV.list({ prefix: "airef:", cursor, limit: 1000 });
+        const list = await env.LEADS_KV.list({ prefix: "tel:ref:", cursor, limit: 1000 });
         for (const k of list.keys) {
+          if (k.name.endsWith(":last")) continue;
           const raw = await env.LEADS_KV.get(k.name);
           aiRefs += parseInt(raw || "0", 10) || 0;
         }
