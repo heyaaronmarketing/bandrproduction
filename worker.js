@@ -804,36 +804,72 @@ async function getGoogleToken(env, secretName, scope) {
 }
 
 // ---- Google Search Console ----
+const _ymd = (d) => new Date(d).toISOString().slice(0, 10);
+
+async function gscQuery(env, { startDate, endDate, dimensions = [], rowLimit = 25 }) {
+  const site = env.GSC_SITE_URL || "sc-domain:bandrproduction.com";
+  const token = await getGoogleToken(env, "GSC_SERVICE_ACCOUNT_JSON", "https://www.googleapis.com/auth/webmasters.readonly");
+  const url = `https://searchconsole.googleapis.com/webmasters/v3/sites/${encodeURIComponent(site)}/searchAnalytics/query`;
+  const r = await fetch(url, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ startDate, endDate, dimensions, rowLimit }),
+  });
+  const j = await r.json();
+  if (!r.ok) throw new Error(`GSC ${r.status}: ${j.error && j.error.message || ""}`);
+  return j.rows || [];
+}
+
 async function gscSummary(env, days) {
   if (!env.GSC_SERVICE_ACCOUNT_JSON) {
     return { ok: true, configured: false, note: "Set GSC_SERVICE_ACCOUNT_JSON (Google Cloud service account JSON) as a Worker Secret. Add its client_email as a User on the GSC property." };
   }
-  const site = env.GSC_SITE_URL || "sc-domain:bandrproduction.com";
-  const endDate = new Date().toISOString().slice(0, 10);
-  const startDate = new Date(Date.now() - days * 86400000).toISOString().slice(0, 10);
+  const endDate = _ymd(Date.now());
+  const startDate = _ymd(Date.now() - days * 86400000);
   try {
-    const token = await getGoogleToken(env, "GSC_SERVICE_ACCOUNT_JSON", "https://www.googleapis.com/auth/webmasters.readonly");
-    const url = `https://searchconsole.googleapis.com/webmasters/v3/sites/${encodeURIComponent(site)}/searchAnalytics/query`;
-    async function q(dims, limit) {
-      const r = await fetch(url, {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-        body: JSON.stringify({ startDate, endDate, dimensions: dims, rowLimit: limit || 25 }),
-      });
-      const j = await r.json();
-      if (!r.ok) throw new Error(`GSC ${r.status}: ${j.error && j.error.message || ""}`);
-      return j.rows || [];
-    }
-    // Dimension-free query = true site totals (not top-N sum)
-    const [totalsRows, queries, pages] = await Promise.all([q([], 1), q(["query"]), q(["page"])]);
+    const [totalsRows, queries, pages] = await Promise.all([
+      gscQuery(env, { startDate, endDate, dimensions: [], rowLimit: 1 }),
+      gscQuery(env, { startDate, endDate, dimensions: ["query"], rowLimit: 25 }),
+      gscQuery(env, { startDate, endDate, dimensions: ["page"], rowLimit: 25 }),
+    ]);
     const tot = totalsRows[0] || {};
     return {
-      ok: true, configured: true, site, days,
+      ok: true, configured: true, site: env.GSC_SITE_URL || "sc-domain:bandrproduction.com", days,
       totals: { clicks: tot.clicks || 0, impressions: tot.impressions || 0, avgPosition: Number((tot.position || 0).toFixed(1)) },
       queries, pages,
     };
   } catch (e) {
     return { ok: false, configured: true, error: String(e && e.message || e) };
+  }
+}
+
+// Rich feed for aaron.chat: 90d totals, prior-90d totals for delta, and
+// daily rows for ~180d so the client-side report can chart monthly trends.
+async function gscRich(env) {
+  if (!env.GSC_SERVICE_ACCOUNT_JSON) return null;
+  try {
+    const now = Date.now();
+    const end = _ymd(now);
+    const start90 = _ymd(now - 90 * 86400000);
+    const start180 = _ymd(now - 180 * 86400000);
+    const prior90End = _ymd(now - 91 * 86400000);
+    const [cur90Rows, prior90Rows, dailyRows] = await Promise.all([
+      gscQuery(env, { startDate: start90, endDate: end, dimensions: [], rowLimit: 1 }),
+      gscQuery(env, { startDate: start180, endDate: prior90End, dimensions: [], rowLimit: 1 }),
+      gscQuery(env, { startDate: start180, endDate: end, dimensions: ["date"], rowLimit: 200 }),
+    ]);
+    const cur = cur90Rows[0] || {};
+    const prior = prior90Rows[0] || {};
+    const pct = (now, was) => was ? Math.round(((now - was) / was) * 100) : 0;
+    return {
+      last_90d: { clicks: cur.clicks || 0, impressions: cur.impressions || 0, avg_position: Number((cur.position || 0).toFixed(1)) },
+      prior_90d: { clicks: prior.clicks || 0, impressions: prior.impressions || 0, avg_position: Number((prior.position || 0).toFixed(1)) },
+      delta_90d: { clicks_pct: pct(cur.clicks || 0, prior.clicks || 0), impressions_pct: pct(cur.impressions || 0, prior.impressions || 0) },
+      daily: dailyRows.map(r => ({ date: (r.keys || [])[0], clicks: r.clicks || 0, impressions: r.impressions || 0 })),
+    };
+  } catch (e) {
+    console.log("gscRich failed (non-fatal):", e && e.message);
+    return null;
   }
 }
 
@@ -2227,24 +2263,35 @@ async function caseStudyJson(request, env, ctx) {
 
   const now = new Date().toISOString();
 
-  // --- Google Search Console (28d + 90d) ---
-  let gsc28 = null, gscAllTime = null, gscTopQueries = [], gscTopPages = [];
+  // --- Google Search Console: rich shape for aaron.chat ClientReport ---
+  // Carries last_90d + prior_90d + delta_90d + daily[] so the monthly report
+  // lights up the "Google sent you N clicks (up X%)" headline + chart.
+  let gscBlock = null;
   try {
-    const g = await gscSummary(env, 28);
-    if (g && g.ok && g.configured) {
-      const t = g.totals || {};
-      const ctr = t.impressions ? t.clicks / t.impressions : 0;
-      gsc28 = { clicks: t.clicks || 0, impressions: t.impressions || 0, ctr: Number(ctr.toFixed(4)), position: t.avgPosition || 0, days: 28 };
-      gscTopQueries = (g.queries || []).slice(0, 20).map(r => ({ query: (r.keys || [])[0], clicks: r.clicks || 0, impressions: r.impressions || 0, position: Number((r.position || 0).toFixed(1)) }));
-      gscTopPages = (g.pages || []).slice(0, 20).map(r => ({ page: (r.keys || [])[0], clicks: r.clicks || 0, impressions: r.impressions || 0, position: Number((r.position || 0).toFixed(1)) }));
+    const [rich, g28] = await Promise.all([gscRich(env), gscSummary(env, 28)]);
+    const topQueries = (g28 && g28.ok && g28.queries ? g28.queries : []).slice(0, 25).map(r => ({
+      query: (r.keys || [])[0], clicks: r.clicks || 0, impressions: r.impressions || 0, position: Number((r.position || 0).toFixed(1)),
+    }));
+    const topPages = (g28 && g28.ok && g28.pages ? g28.pages : []).slice(0, 25).map(r => ({
+      page: (r.keys || [])[0], clicks: r.clicks || 0, impressions: r.impressions || 0, position: Number((r.position || 0).toFixed(1)),
+    }));
+    if (rich || g28?.ok) {
+      const t28 = (g28 && g28.ok) ? g28.totals : null;
+      const ctr28 = (t28 && t28.impressions) ? t28.clicks / t28.impressions : 0;
+      gscBlock = {
+        all_time: rich ? rich.last_90d : (t28 ? { clicks: t28.clicks || 0, impressions: t28.impressions || 0, avg_position: t28.avgPosition || 0 } : null),
+        last_90d: rich ? rich.last_90d : null,
+        prior_90d: rich ? rich.prior_90d : null,
+        delta_90d: rich ? rich.delta_90d : null,
+        last_28_days: t28 ? { clicks: t28.clicks || 0, impressions: t28.impressions || 0, ctr: Number(ctr28.toFixed(4)), position: t28.avgPosition || 0, days: 28 } : null,
+        top_queries: topQueries,
+        top_pages: topPages,
+        daily: rich ? rich.daily : [],
+        source: "Google Search Console",
+        updated: new Date().toISOString(),
+      };
     }
-    const gAll = await gscSummary(env, 90);
-    if (gAll && gAll.ok && gAll.configured) {
-      const t = gAll.totals || {};
-      const ctr = t.impressions ? t.clicks / t.impressions : 0;
-      gscAllTime = { clicks: t.clicks || 0, impressions: t.impressions || 0, ctr: Number(ctr.toFixed(4)), position: t.avgPosition || 0, days: 90, note: "GSC caps at 16 months; this is the 90-day actively-reported window" };
-    }
-  } catch (e) { /* GSC not configured — keep nulls */ }
+  } catch (e) { /* GSC not configured — keep null */ }
 
   // --- Bing ---
   let bing = null;
@@ -2366,6 +2413,7 @@ async function caseStudyJson(request, env, ctx) {
   const payload = {
     schema_version: "1.1",
     last_updated: now,
+    data_as_of: now,
     client: {
       name: "B&R Productions",
       industry: "precision CNC machining · oil & gas · aerospace · defense",
@@ -2389,12 +2437,7 @@ async function caseStudyJson(request, env, ctx) {
       leads_all_time: totalLeads,
       leads_last_30_days: leadsLast30,
     },
-    google_search: {
-      last_28_days: gsc28,
-      all_time: gscAllTime,
-      top_queries: gscTopQueries,
-      top_pages: gscTopPages,
-    },
+    google_search: gscBlock,
     bing_search: bing,
     ai_search: {
       all_time: {
