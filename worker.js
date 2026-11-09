@@ -699,38 +699,9 @@ function isContentPath(p) {
   return true;
 }
 
-async function bumpCounter(env, key) {
-  const cur = await env.LEADS_KV.get(key);
-  const n = cur ? (parseInt(cur, 10) || 0) : 0;
-  return env.LEADS_KV.put(key, String(n + 1), { expirationTtl: 60 * 60 * 24 * 120 });
-}
-
-async function logTelemetry(request, env, url) {
-  if (!env.LEADS_KV) return;
-  const ua = request.headers.get("user-agent") || "";
-  const ref = request.headers.get("referer") || "";
-  const p = url.pathname;
-  const bot = detectAiBot(ua);
-  const aiRef = detectAiReferrer(ref);
-  const isPage = isContentPath(p);
-  if (!bot && !aiRef && !isPage) return;
-  const day = new Date().toISOString().slice(0, 10);
-  const puts = [];
-  if (bot) {
-    puts.push(bumpCounter(env, `tel:bot:${bot}:${day}`));
-    puts.push(env.LEADS_KV.put(`tel:bot:${bot}:last`,
-      JSON.stringify({ ts: Date.now(), path: p.slice(0, 200) }),
-      { expirationTtl: 60 * 60 * 24 * 120 }));
-  }
-  if (aiRef) {
-    puts.push(bumpCounter(env, `tel:ref:${aiRef}:${day}`));
-    puts.push(env.LEADS_KV.put(`tel:ref:${aiRef}:last`,
-      JSON.stringify({ ts: Date.now(), path: p.slice(0, 200) }),
-      { expirationTtl: 60 * 60 * 24 * 120 }));
-  }
-  if (isPage && !bot) puts.push(bumpCounter(env, `tel:pv:${day}`));
-  await Promise.all(puts);
-}
+// Per-request telemetry removed to stay inside Workers Free KV write quota.
+// Historical tel:* keys self-expire (120d TTL); readers tolerate missing data.
+// For traffic + bot analytics, use Cloudflare Zone Analytics in the dashboard.
 
 // ---------------------------------------------------------------------------
 // Dashboard — SEO + AEO insights UI at /dashboard/.
@@ -825,7 +796,9 @@ async function getGoogleToken(env, secretName, scope) {
   }
   if (env.LEADS_KV) {
     const exp = Math.floor(Date.now() / 1000) + (data.expires_in || 3600);
-    await env.LEADS_KV.put(cacheKey, JSON.stringify({ token: data.access_token, exp }), { expirationTtl: 3300 });
+    // Tolerate KV write-quota exhaustion — token still works uncached, just slower next call.
+    env.LEADS_KV.put(cacheKey, JSON.stringify({ token: data.access_token, exp }), { expirationTtl: 3300 })
+      .catch((e) => console.log("google token cache put failed (non-fatal):", e && e.message));
   }
   return data.access_token;
 }
@@ -2251,18 +2224,22 @@ async function caseStudyJson(request, env, ctx) {
 
   const now = new Date().toISOString();
 
-  // --- Google Search Console (28d + all-time proxy via last-28 * 13 fallback if API dead) ---
+  // --- Google Search Console (28d + 90d) ---
   let gsc28 = null, gscAllTime = null, gscTopQueries = [], gscTopPages = [];
   try {
     const g = await gscSummary(env, 28);
-    if (g && g.ok) {
-      gsc28 = { clicks: g.clicks || 0, impressions: g.impressions || 0, ctr: g.ctr || 0, position: g.position || 0, days: 28 };
-      gscTopQueries = (g.top_queries || []).slice(0, 20);
-      gscTopPages = (g.top_pages || []).slice(0, 20);
+    if (g && g.ok && g.configured) {
+      const t = g.totals || {};
+      const ctr = t.impressions ? t.clicks / t.impressions : 0;
+      gsc28 = { clicks: t.clicks || 0, impressions: t.impressions || 0, ctr: Number(ctr.toFixed(4)), position: t.avgPosition || 0, days: 28 };
+      gscTopQueries = (g.queries || []).slice(0, 20).map(r => ({ query: (r.keys || [])[0], clicks: r.clicks || 0, impressions: r.impressions || 0, position: Number((r.position || 0).toFixed(1)) }));
+      gscTopPages = (g.pages || []).slice(0, 20).map(r => ({ page: (r.keys || [])[0], clicks: r.clicks || 0, impressions: r.impressions || 0, position: Number((r.position || 0).toFixed(1)) }));
     }
     const gAll = await gscSummary(env, 90);
-    if (gAll && gAll.ok) {
-      gscAllTime = { clicks: gAll.clicks || 0, impressions: gAll.impressions || 0, ctr: gAll.ctr || 0, position: gAll.position || 0, days: 90, note: "GSC caps at 16 months; this is the 90-day actively-reported window" };
+    if (gAll && gAll.ok && gAll.configured) {
+      const t = gAll.totals || {};
+      const ctr = t.impressions ? t.clicks / t.impressions : 0;
+      gscAllTime = { clicks: t.clicks || 0, impressions: t.impressions || 0, ctr: Number(ctr.toFixed(4)), position: t.avgPosition || 0, days: 90, note: "GSC caps at 16 months; this is the 90-day actively-reported window" };
     }
   } catch (e) { /* GSC not configured — keep nulls */ }
 
@@ -3247,10 +3224,24 @@ export default {
     // by ChatGPT/Claude/Perplexity/Google AI. A single Allow rule + sitemap
     // pointer is the correct minimum.
     if (p === "/robots.txt") {
-      return new Response(
-        "User-agent: *\nAllow: /\n\nSitemap: https://bandrproduction.com/sitemap.xml\n",
-        { headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "public, max-age=3600" } }
-      );
+      const AI_BOTS = [
+        "GPTBot", "ChatGPT-User", "OAI-SearchBot",
+        "ClaudeBot", "Claude-Web", "anthropic-ai",
+        "PerplexityBot", "Perplexity-User",
+        "Google-Extended", "GoogleOther", "Applebot-Extended",
+        "meta-externalagent", "FacebookBot",
+        "Amazonbot", "cohere-ai", "CCBot", "Bytespider",
+        "MistralAI-User", "Diffbot",
+      ];
+      const aiBlock = AI_BOTS.map(b => `User-agent: ${b}\nAllow: /`).join("\n\n");
+      const body =
+        "# Default: allow all\nUser-agent: *\nAllow: /\n\n" +
+        "# AI crawlers — explicit allowlist for AEO citations\n" +
+        aiBlock + "\n\n" +
+        "Sitemap: https://bandrproduction.com/sitemap.xml\n";
+      return new Response(body, {
+        headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "public, max-age=3600" },
+      });
     }
     // Quote form endpoint
     if (p === "/api/case-study.json" && (request.method === "GET" || request.method === "OPTIONS")) return caseStudyJson(request, env, ctx);
@@ -3295,9 +3286,8 @@ export default {
       })());
       return json({ ok: true, queued: true, note: "snapshot running in background; check /dashboard/api/ranks in ~30-60s" });
     }
-    // Log telemetry (AI bot + AI referrer + page views) — async, doesn't
-    // delay the response.
-    ctx.waitUntil(logTelemetry(request, env, url).catch(() => {}));
+    // Telemetry removed — CF Zone Analytics covers traffic + bot data for free
+    // without burning KV write quota. Historical tel:* keys self-expire (120d TTL).
     // Fallback: serve static assets (normally handled before the Worker runs).
     return env.ASSETS.fetch(request);
   },
