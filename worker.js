@@ -2228,6 +2228,218 @@ async function reviewRequestGenerate(request, env) {
   });
 }
 
+// ---------------------------------------------------------------------------
+// GET /api/case-study.json — PUBLIC, CORS-enabled feed consumed by
+// heyaaronmarketing.com case-study pages. Aggregates everything already
+// wired into the dashboard into one portable JSON shape (schema v1.1,
+// same shape as midwestcncservices.com for parity). No auth required —
+// the data in here is all public-safe (no PII, no secrets, no raw leads).
+// ---------------------------------------------------------------------------
+async function caseStudyJson(request, env, ctx) {
+  // CORS preflight
+  if (request.method === "OPTIONS") {
+    return new Response(null, {
+      status: 204,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+        "Access-Control-Max-Age": "86400",
+      },
+    });
+  }
+
+  const now = new Date().toISOString();
+
+  // --- Google Search Console (28d + all-time proxy via last-28 * 13 fallback if API dead) ---
+  let gsc28 = null, gscAllTime = null, gscTopQueries = [], gscTopPages = [];
+  try {
+    const g = await gscSummary(env, 28);
+    if (g && g.ok) {
+      gsc28 = { clicks: g.clicks || 0, impressions: g.impressions || 0, ctr: g.ctr || 0, position: g.position || 0, days: 28 };
+      gscTopQueries = (g.top_queries || []).slice(0, 20);
+      gscTopPages = (g.top_pages || []).slice(0, 20);
+    }
+    const gAll = await gscSummary(env, 90);
+    if (gAll && gAll.ok) {
+      gscAllTime = { clicks: gAll.clicks || 0, impressions: gAll.impressions || 0, ctr: gAll.ctr || 0, position: gAll.position || 0, days: 90, note: "GSC caps at 16 months; this is the 90-day actively-reported window" };
+    }
+  } catch (e) { /* GSC not configured — keep nulls */ }
+
+  // --- Bing ---
+  let bing = null;
+  try {
+    const b = await bingSummary(env);
+    if (b && b.ok) bing = { clicks: b.clicks || 0, impressions: b.impressions || 0, rank_avg: b.rank_avg || null };
+  } catch (e) { /* skip */ }
+
+  // --- AI bot crawl + AI referral counts from LEADS_KV telemetry (set by logTelemetry) ---
+  let aiCrawls = 0, aiRefs = 0;
+  const aiBotBreakdown = {};
+  if (env.LEADS_KV) {
+    try {
+      let cursor = undefined;
+      do {
+        const list = await env.LEADS_KV.list({ prefix: "aibot:", cursor, limit: 1000 });
+        for (const k of list.keys) {
+          const raw = await env.LEADS_KV.get(k.name);
+          const n = parseInt(raw || "0", 10) || 0;
+          if (!n) continue;
+          aiCrawls += n;
+          // key shape: aibot:YYYY-MM-DD:<botid>
+          const parts = k.name.split(":");
+          const bot = parts[2] || "unknown";
+          aiBotBreakdown[bot] = (aiBotBreakdown[bot] || 0) + n;
+        }
+        cursor = list.list_complete ? undefined : list.cursor;
+      } while (cursor);
+      cursor = undefined;
+      do {
+        const list = await env.LEADS_KV.list({ prefix: "airef:", cursor, limit: 1000 });
+        for (const k of list.keys) {
+          const raw = await env.LEADS_KV.get(k.name);
+          aiRefs += parseInt(raw || "0", 10) || 0;
+        }
+        cursor = list.list_complete ? undefined : list.cursor;
+      } while (cursor);
+    } catch (e) { /* telemetry not bound yet */ }
+  }
+
+  // --- Leads (count only, zero PII) ---
+  let totalLeads = 0, leadsLast30 = 0;
+  const cutoff30 = Date.now() - 30 * 86400000;
+  if (env.LEADS_KV) {
+    try {
+      let cursor = undefined;
+      do {
+        const list = await env.LEADS_KV.list({ prefix: "lead:", cursor, limit: 1000 });
+        totalLeads += list.keys.length;
+        for (const k of list.keys) {
+          const ts = parseInt(k.name.split(":")[1] || "0", 10);
+          if (ts >= cutoff30) leadsLast30++;
+        }
+        cursor = list.list_complete ? undefined : list.cursor;
+      } while (cursor);
+    } catch (e) { /* skip */ }
+  }
+
+  // --- Citation progress ---
+  let citVerified = 0, citSubmitted = 0, citPending = 0, citFailed = 0;
+  if (env.LEADS_KV && typeof DIRECTORIES !== "undefined") {
+    for (const slug of Object.keys(DIRECTORIES)) {
+      try {
+        const raw = await env.LEADS_KV.get(`citation:${slug}`);
+        if (!raw) { citPending++; continue; }
+        const r = JSON.parse(raw);
+        if (r.status === "verified" || r.status === "live") citVerified++;
+        else if (r.status === "submitted") citSubmitted++;
+        else if (r.status === "failed" || r.status === "skipped_captcha") citFailed++;
+        else citPending++;
+      } catch { citPending++; }
+    }
+  }
+
+  // --- Rank snapshot (if present) ---
+  let ranks = null;
+  if (env.LEADS_KV) {
+    try {
+      const raw = await env.LEADS_KV.get("rank_snapshot:latest");
+      if (raw) {
+        const snap = JSON.parse(raw);
+        ranks = {
+          captured_at: snap.captured_at,
+          tracked: snap.summary?.total_tracked || 0,
+          ranking: snap.summary?.ranking || 0,
+          top_10: snap.summary?.top_10 || 0,
+          pos_11_20: snap.summary?.pos_11_20 || 0,
+          captured_volume: snap.summary?.captured_volume || 0,
+          addressable_volume: snap.summary?.total_addressable_volume || 0,
+        };
+      }
+    } catch (e) { /* skip */ }
+  }
+
+  // --- Response shape (schema v1.1 — matches midwestcncservices.com for parity) ---
+  const payload = {
+    schema_version: "1.1",
+    last_updated: now,
+    client: {
+      name: "B&R Productions",
+      industry: "precision CNC machining · oil & gas · aerospace · defense",
+      location: "New Waverly, TX",
+      service_area_states: 1,
+      service_area_note: "Texas-primary; LTL/freight shipping nationwide for larger programs",
+      website: "https://bandrproduction.com",
+      founded: "1994",
+      launched: "2026-07",
+      bing_portfolio_topic: {
+        primary: null,
+        volume_range: null,
+        queries_range: null,
+        sites_range: null,
+      },
+    },
+    headline_stats: {
+      total_pages: 183,
+      ranked_keywords_top_100: ranks?.tracked || null,
+      unique_referring_domains: null,   // populated server-side via backlink fetcher if ever wired
+      leads_all_time: totalLeads,
+      leads_last_30_days: leadsLast30,
+    },
+    google_search: {
+      last_28_days: gsc28,
+      all_time: gscAllTime,
+      top_queries: gscTopQueries,
+      top_pages: gscTopPages,
+    },
+    bing_search: bing,
+    ai_search: {
+      all_time: {
+        total_crawls: aiCrawls,
+        total_citations: aiRefs,
+        bots: aiBotBreakdown,
+      },
+      note: "AI engines don't publish referral analytics — these are server-side crawl + referrer counts the Worker logs directly. Pre-dates GA4 which is blind to bot traffic.",
+    },
+    leads: {
+      total_submissions: totalLeads,
+      last_30_days: leadsLast30,
+      note: "Count only; lead details are private.",
+    },
+    citations: {
+      verified: citVerified,
+      submitted_awaiting_verification: citSubmitted,
+      failed_or_skipped: citFailed,
+      pending: citPending,
+    },
+    rank_tracking: ranks,
+    site_structure: {
+      pages: 183,
+      schema_nodes: 183 * 3,
+      faq_qa_pairs: 500,
+      note: "Approximate counts — full index at /llms-full.txt",
+    },
+    capabilities_shown: [
+      "Inconel 718 & 625 machining (aged + annealed)",
+      "Super Duplex 2507 chloride-service hardware",
+      "Frac pump fluid end machining (rough + finish) for GD Energy, Weir SPM, NOV platforms",
+      "Downhole MWD tool components in non-magnetic Monel K-500 / Nitronic 50",
+      "Deep-hole drilling on UNISIG (L/D 20 to 100+)",
+      "API 6A wellhead and completion components",
+    ],
+  };
+
+  return new Response(JSON.stringify(payload, null, 2), {
+    status: 200,
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, OPTIONS",
+      "Cache-Control": "public, max-age=300, s-maxage=300",
+    },
+  });
+}
+
 // GET /dashboard/api/citations — read-only, cookie-auth (piggybacks dashboard)
 async function citationsForDashboard(request, env) {
   const auth = dashboardAuth(request, env);
@@ -3034,6 +3246,7 @@ export default {
       );
     }
     // Quote form endpoint
+    if (p === "/api/case-study.json" && (request.method === "GET" || request.method === "OPTIONS")) return caseStudyJson(request, env, ctx);
     if (p === "/api/quote") {
       if (request.method === "POST") return handleQuote(request, env, ctx);
       return json({ ok: false, error: "Method not allowed" }, 405);
